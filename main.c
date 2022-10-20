@@ -11,12 +11,17 @@ main()
 	insert(&root, 9);
 	insert(&root, 7);
 
-	find(root, 8);
-	find(root, 6);
-
-	printf("\n\t");
+	printf("\n");
+	printf("Preorder:\n\t");
 	print_preorder(root);
 	printf("\n\n");
 
+	printf("Inorder:\n\t");
+	print_inorder(root);
+	printf("\n\n");
+
+	printf("Postorder:\n\t");
+	print_postorder(root);
+	printf("\n\n");
 	return 0;
 }

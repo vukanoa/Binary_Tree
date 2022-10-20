@@ -71,3 +71,35 @@ print_preorder(struct Node* root)
 	if (root->right != NULL)
 		print_preorder(root->right);
 }
+
+
+void
+print_inorder(struct Node* root)
+{
+	if (root == NULL)
+		return;
+	
+	if (root->left != NULL)
+		print_inorder(root->left);
+	
+	printf("%d ", root->data);
+
+	if (root->right != NULL)
+		print_inorder(root->right);
+}
+
+
+void
+print_postorder(struct Node* root)
+{
+	if (root == NULL)
+		return;
+	
+	if (root->left != NULL)
+		print_postorder(root->left);
+	
+	if (root->right != NULL)
+		print_postorder(root->right);
+	
+	printf("%d ", root->data);
+}

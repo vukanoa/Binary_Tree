@@ -15,6 +15,8 @@ void find	(struct Node*  root, int data);
 /* Orders of printing */
 
 // Recursive priting
-void print_preorder(struct Node* root);
+void print_preorder (struct Node* root);
+void print_inorder  (struct Node* root);
+void print_postorder(struct Node* root);
 
 #endif //TREE_H
