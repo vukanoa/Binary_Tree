@@ -19,4 +19,9 @@ void print_preorder (struct Node* root);
 void print_inorder  (struct Node* root);
 void print_postorder(struct Node* root);
 
+// Iterative printing
+void iter_print_preorder (struct Node* root);
+void iter_print_inorder  (struct Node* root);
+void iter_print_postorder(struct Node* root);
+
 #endif //TREE_H

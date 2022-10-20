@@ -1,5 +1,8 @@
 #include <stdlib.h>
+#include <math.h>
 #include "tree.h"
+#define EMPTY_STACK -1
+#define TREE_HEIGHT 4
 
 void
 insert(struct Node** root, int data)
@@ -102,4 +105,94 @@ print_postorder(struct Node* root)
 		print_postorder(root->right);
 	
 	printf("%d ", root->data);
+}
+
+
+void
+iter_print_preorder(struct Node* root)
+{
+	if (root == NULL)
+		return;
+
+	int sp = EMPTY_STACK;
+	struct Node** stack = malloc(sizeof(struct Node*) * TREE_HEIGHT);
+
+	stack[++sp] = root;
+	while (sp != EMPTY_STACK)
+	{
+		root = stack[sp--];
+		printf("%d ", root->data);
+
+		if (root->right != NULL)
+			stack[++sp] = root->right;
+
+		if (root->right != NULL)
+			stack[++sp] = root->left;
+	}
+	free(stack);
+}
+
+
+void
+iter_print_inorder(struct Node* root)
+{
+	if (root == NULL)
+		return;
+	
+	int sp = EMPTY_STACK;
+	struct Node** stack = malloc(sizeof(struct Node*) * TREE_HEIGHT);
+
+	for(;;)
+	{
+		if (root != NULL)
+		{
+			stack[++sp] = root;
+			root = root->left;
+		}
+		else
+		{
+			if (sp == EMPTY_STACK)
+				break;
+
+			root = stack[sp--];
+			printf("%d ", root->data);
+			root = root->right;
+		}
+	}
+	free(stack);
+}
+
+
+void
+iter_print_postorder(struct Node* root)
+{
+	if (root == NULL)
+		return;
+	
+	int sp_1 = EMPTY_STACK;
+	int sp_2 = EMPTY_STACK;
+	struct Node** stack_1 = malloc(sizeof(struct Node*) * pow(2, TREE_HEIGHT));
+	struct Node** stack_2 = malloc(sizeof(struct Node*) * pow(2, TREE_HEIGHT));
+
+	stack_1[++sp_1] = root;
+
+	while (sp_1 != EMPTY_STACK)
+	{
+		root = stack_1[sp_1--];
+		stack_2[++sp_2] = root;
+
+		if (root->left != NULL)
+			stack_1[++sp_1] = root->left;
+
+		if (root->right != NULL)
+			stack_1[++sp_1] = root->right;
+	}
+
+	while (sp_2 != EMPTY_STACK)
+	{
+		root = stack_2[sp_2--];
+		printf("%d ", root->data);
+	}
+	free(stack_1);
+	free(stack_2);
 }
