@@ -10,6 +10,13 @@ main()
 	insert(&root, 2);
 	insert(&root, 9);
 	insert(&root, 7);
+	insert(&root, 1);
+
+	/*
+			5
+		2       8
+	  1       7   9
+	*/
 
 	printf("\n");
 	printf("Preorder: (Recursive)\n\t");
@@ -33,6 +40,10 @@ main()
 	iter_print_postorder(root);
 	printf("\n\n");
 
+	printf("\n");
+	printf("Level order: (Iterative)\n\t");
+	iter_print_levelorder(root);
+	printf("\n\n");
 
 /*
 		5

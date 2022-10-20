@@ -3,6 +3,7 @@
 #include "tree.h"
 #define EMPTY_STACK -1
 #define TREE_HEIGHT 4
+#define QUEUE_FRONT 0
 
 void
 insert(struct Node** root, int data)
@@ -115,7 +116,7 @@ iter_print_preorder(struct Node* root)
 		return;
 
 	int sp = EMPTY_STACK;
-	struct Node** stack = malloc(sizeof(struct Node*) * TREE_HEIGHT);
+	struct Node** stack = malloc(sizeof(struct Node*) * 500);
 
 	stack[++sp] = root;
 	while (sp != EMPTY_STACK)
@@ -126,7 +127,7 @@ iter_print_preorder(struct Node* root)
 		if (root->right != NULL)
 			stack[++sp] = root->right;
 
-		if (root->right != NULL)
+		if (root->left != NULL)
 			stack[++sp] = root->left;
 	}
 	free(stack);
@@ -195,4 +196,32 @@ iter_print_postorder(struct Node* root)
 	}
 	free(stack_1);
 	free(stack_2);
+}
+
+void
+iter_print_levelorder(struct Node* root)
+{
+	if (root == NULL)
+		return;
+	
+	int front = QUEUE_FRONT;
+	int rear  = QUEUE_FRONT;
+	struct Node** queue = malloc(sizeof(struct Node*) * pow(2, TREE_HEIGHT - 1));
+	
+	for(;;)
+	{
+		printf("%d ", root->data);
+
+		if (root->left != NULL)
+			queue[rear++] = root->left;
+
+		if (root->right != NULL)
+			queue[rear++] = root->right;
+
+		if (front == rear)
+			break;
+
+		root = queue[front++];
+	}
+	free(queue);
 }
