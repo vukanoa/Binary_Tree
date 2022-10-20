@@ -34,3 +34,40 @@ insert(struct Node** root, int data)
 			prev->right = tmp;
 	}
 }
+
+
+void
+find(struct Node* root, int data)
+{
+	while (root != NULL)
+	{
+		if (root->data == data)
+		{
+			printf("\n\tNode %d does exist in the Tree!\n\n", data);
+			return;
+		}
+
+		if (data < root->data)
+			root = root->left;
+		else
+			root = root->right;
+	}
+
+	printf("\n\tNode %d does NOT exist in the Tree!\n\n", data);
+}
+
+
+void
+print_preorder(struct Node* root)
+{
+	if (root == NULL)
+		return;
+	
+	printf("%d ", root->data);
+
+	if (root->left != NULL)
+		print_preorder(root->left);
+
+	if (root->right != NULL)
+		print_preorder(root->right);
+}

@@ -11,6 +11,12 @@ main()
 	insert(&root, 9);
 	insert(&root, 7);
 
+	find(root, 8);
+	find(root, 6);
+
+	printf("\n\t");
+	print_preorder(root);
+	printf("\n\n");
 
 	return 0;
 }
