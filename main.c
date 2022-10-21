@@ -11,44 +11,18 @@ main()
 	insert(&root, 9);
 	insert(&root, 7);
 	insert(&root, 1);
-
-	/*
-			5
-		2       8
-	  1       7   9
-	*/
-
-	printf("\n");
-	printf("Preorder: (Recursive)\n\t");
-	print_preorder(root);
-	printf("\n");
-	printf("Preorder: (Iterative)\n\t");
-	iter_print_preorder(root);
-	printf("\n\n");
-
-	printf("Inorder:\n\t");
-	print_inorder(root);
-	printf("\n");
-	printf("Inorder: (Iterative)\n\t");
-	iter_print_inorder(root);
-	printf("\n\n");
-
-	printf("Postorder:\n\t");
-	print_postorder(root);
-	printf("\n");
-	printf("Postorder: (Iterative)\n\t");
-	iter_print_postorder(root);
-	printf("\n\n");
-
+/*
+		5
+	2		8
+  1	   	  7   9
+*/
 	printf("\n");
 	printf("Level order: (Iterative)\n\t");
 	iter_print_levelorder(root);
 	printf("\n\n");
 
-/*
-		5
-	2		8
-	  3	  7   9
-*/
+	visual_print(root);
+
+
 	return 0;
 }

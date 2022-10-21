@@ -2,8 +2,11 @@
 #include <math.h>
 #include "tree.h"
 #define EMPTY_STACK -1
-#define TREE_HEIGHT 4
+#define HEIGHT 4
 #define QUEUE_FRONT 0
+#define LAST_LEVEL_SPACES 3
+
+int height_tree;
 
 void
 insert(struct Node** root, int data)
@@ -13,6 +16,9 @@ insert(struct Node** root, int data)
 	tmp->data  = data;
 	tmp->left  = NULL;
 	tmp->right = NULL;
+	tmp->level = 0;
+
+	int level = 0;
 
 	// Check if the Tree is Empty
 	if ((*root) == NULL)
@@ -24,6 +30,7 @@ insert(struct Node** root, int data)
 
 		while (cur != NULL)
 		{
+			level++;
 			prev = cur;
 
 			if (data < cur->data)
@@ -31,6 +38,11 @@ insert(struct Node** root, int data)
 			else
 				cur = cur->right;
 		}
+
+		tmp->level = level;
+		if (level + 1 > height_tree)
+			height_tree = level + 1;
+
 
 		if (data < prev->data)
 			prev->left = tmp;
@@ -141,7 +153,7 @@ iter_print_inorder(struct Node* root)
 		return;
 	
 	int sp = EMPTY_STACK;
-	struct Node** stack = malloc(sizeof(struct Node*) * TREE_HEIGHT);
+	struct Node** stack = malloc(sizeof(struct Node*) * HEIGHT);
 
 	for(;;)
 	{
@@ -172,8 +184,8 @@ iter_print_postorder(struct Node* root)
 	
 	int sp_1 = EMPTY_STACK;
 	int sp_2 = EMPTY_STACK;
-	struct Node** stack_1 = malloc(sizeof(struct Node*) * pow(2, TREE_HEIGHT));
-	struct Node** stack_2 = malloc(sizeof(struct Node*) * pow(2, TREE_HEIGHT));
+	struct Node** stack_1 = malloc(sizeof(struct Node*) * pow(2, HEIGHT));
+	struct Node** stack_2 = malloc(sizeof(struct Node*) * pow(2, HEIGHT));
 
 	stack_1[++sp_1] = root;
 
@@ -206,7 +218,7 @@ iter_print_levelorder(struct Node* root)
 	
 	int front = QUEUE_FRONT;
 	int rear  = QUEUE_FRONT;
-	struct Node** queue = malloc(sizeof(struct Node*) * pow(2, TREE_HEIGHT - 1));
+	struct Node** queue = malloc(sizeof(struct Node*) * pow(2, HEIGHT - 1));
 	
 	for(;;)
 	{
@@ -224,4 +236,262 @@ iter_print_levelorder(struct Node* root)
 		root = queue[front++];
 	}
 	free(queue);
+}
+
+
+int
+int_pow(int base, int exp)
+{
+	int result = 1;
+	while(exp)
+	{
+		result *= base;
+		exp--;
+	}
+
+	return result;
+}
+
+
+int
+calculate_spaces(int height, int head_level)
+{
+	if (head_level + 2 > height)
+		return LAST_LEVEL_SPACES;
+
+	int num_1 = int_pow(2, (height - head_level));
+	int num_2 = int_pow(2, (height - head_level - 2)); 
+
+	return num_1 - num_2 - 1;
+}
+
+
+int
+check_power_of_two(int number)
+{
+	if (number == 0)
+		return 0; // NOT a power of two
+	
+	while (number != 1)
+	{
+		if (number % 2 != 0)
+			return 0; // NOT a power of two
+
+		number /= 2;
+	}
+
+	return 1; // INDEED a power of two
+}
+
+
+int
+which_power_of_two(int number)
+{
+	if (number % 2 != 0 && number != 1) /* If Odd number except number 1, since number 1 is 2^0 */
+		return 0; // NOT a power of two
+	
+	int cnt = 0;
+	for(;;)
+	{
+		if (number == int_pow(2, cnt))
+			break;
+
+		if (int_pow(2, cnt) > number) /* If Even number and NOT a power of two */
+			return 0; // NOT a power of two
+
+		cnt++;
+	}
+
+	return cnt; // Return the power of two of a given number
+}
+
+
+void
+visual_print(struct Node* head)
+{
+	// Base case
+	if (head == NULL)
+		return;
+
+	// Queue
+	struct Node** queue = malloc(sizeof(struct Node*) * (int_pow(2, height_tree) - 1));	
+	int front = 1;
+	int rear  = 0;
+
+	// Util variables
+	int num_of_spaces = 0;
+	int first_part = 0;
+	int places_between = 0;
+	int spaces = 0;
+	int cur_level = 0;
+
+
+	// Fill the Queue
+	queue[rear++] = head;
+	while (front < int_pow(2, height_tree))
+	{
+		if (head == NULL)
+		{
+			head = queue[front++];
+			queue[rear++] = NULL;
+			queue[rear++] = NULL;
+
+			continue;
+		}
+
+		// Left
+		if (head->left != NULL)
+			queue[rear++] = head->left;
+		else
+			queue[rear++] = NULL;
+
+		// Right
+		if (head->right != NULL)
+			queue[rear++] = head->right;
+		else
+			queue[rear++] = NULL;
+
+		head = queue[front++];
+	}
+
+	front = 0;
+	rear = int_pow(2, height_tree);
+	while (front < rear - 1)
+	{
+		head = queue[front];
+		cur_level = which_power_of_two(front+1); // 0
+
+		if (front == 0) // First level
+		{
+			num_of_spaces = calculate_spaces(height_tree, head->level);
+			first_part = num_of_spaces;
+
+			// Spaces before root Node
+			while (first_part--)
+				printf("%2c", ' ');
+
+			printf("%2d", head->data); // root Node itself
+			
+			// Spaces after root Node
+			while (num_of_spaces--)
+				printf("%2c", ' ');
+
+			front++;
+		}
+		else if (check_power_of_two(front + 1)) /* Other levels */
+		{
+			if (which_power_of_two(front + 1) == height_tree - 1) /* If it's a LAST level */
+			{
+				printf("\n");
+				front++;
+				if (head == NULL)
+					printf("%2c", ' ');
+				else
+					printf("%2d", head->data);
+
+				places_between = int_pow(2, cur_level) - 1;
+				num_of_spaces = calculate_spaces(height_tree, cur_level);
+				first_part = num_of_spaces;
+
+				while (places_between)
+				{
+					spaces = num_of_spaces;
+
+					// Every odd place
+					if (places_between % 2 != 0)
+					{
+						while (spaces--)
+							printf("%2c", ' ');
+					}
+					else
+							printf("%2c", ' ');
+
+					if (queue[front] == NULL)
+						printf("%2c", ' ');
+					else
+					{
+						head = queue[front];
+						printf("%2d", head->data);
+					}
+					
+					front++;
+					places_between--;
+				}
+			}
+			else /* NOT a Last level */
+			{
+				printf("\n");
+				front++;
+
+				num_of_spaces = calculate_spaces(height_tree, cur_level);
+				first_part = num_of_spaces;
+				while (first_part--)
+						printf("%2c", ' ');
+
+				/*
+					If Level is NOT First nor Last then we have
+					[first_part] then [(depends)*places_between] then [same as first_part]
+
+					=== for HEIGHT: 5 ===
+					NOT -> 0) 23 x 23
+						   1) 11 x 23 x 11
+						   2)  5 x 11 x 11 x 11 x 5
+						   3)  2 x 5  x 5  x 5  x 5  x 5  x 5  x 5  x 5  x 2
+					NOT -> 4)  0 x 3  x 1  x 3  x 1  x 3  x 1  x 3  x 1  x 3  x 1  x 3  x 1  x 3  x 1  x 3  x 0
+				*/
+
+				first_part = num_of_spaces; /* Number of spaces before first element on the level */
+
+				if (head == NULL)
+					printf("%2c", ' ');
+				else
+					printf("%2d", head->data);
+
+				/*
+					=== for HEIGHT: 5 ===
+					Level 0) NOT
+					Level 1) places_between = 1
+					Level 2) places_between = 3
+					Level 3) places_between = 8
+					Level 4) NOT [This is the Last level for HEIGHT: 5]
+				*/
+				places_between = int_pow(2, cur_level) - 1;
+
+				/*
+					=== for HEIGHT: 5 ===
+					Level 0) NOT
+					Level 1) num_of_spaces = 23
+					Level 2) num_of_spaces = 11
+					Level 3) num_of_spaces = 5
+					Level 4) NOT [This is the Last level for HEIGHT: 5]
+				*/
+				num_of_spaces = calculate_spaces(height_tree, cur_level - 1);
+
+				while (places_between)
+				{
+					spaces = num_of_spaces;
+					while (spaces--)
+						printf("%2c", ' ');
+
+					if (queue[front] == NULL)
+						printf("%2c", ' ');
+					else
+					{
+						head = queue[front];
+						printf("%2d", head->data);
+					}
+					
+					front++;
+					places_between--;
+				}
+
+				while (first_part--)
+					printf("%2c", ' ');
+			}
+		}
+	}
+
+	free(queue);
+
+	printf("\n\n");
 }
