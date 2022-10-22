@@ -29,6 +29,7 @@ main()
 	insert(&root, 6);
 	insert(&root, 9);
 	insert(&root, 0);
+	// insert(&root, 4); // Corrups the Heap
 
 
 /*

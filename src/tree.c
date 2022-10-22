@@ -218,7 +218,7 @@ iter_print_levelorder(struct Node* root)
 	
 	int front = QUEUE_FRONT;
 	int rear  = QUEUE_FRONT;
-	struct Node** queue = malloc(sizeof(struct Node*) * pow(2, HEIGHT - 1));
+	struct Node** queue = (struct Node**) malloc(sizeof(struct Node*) * pow(2, HEIGHT - 1));
 	
 	for(;;)
 	{
