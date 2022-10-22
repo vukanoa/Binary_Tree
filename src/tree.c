@@ -515,6 +515,7 @@ del_node(struct Node** root, int data)
 		{
 			if (cur->left == NULL && cur->right == NULL)
 			{
+					printf("1\n");
 				if (prev->left == cur)
 					prev->left = NULL;
 				else if (prev->right == cur)
@@ -525,6 +526,7 @@ del_node(struct Node** root, int data)
 			}
 			else if(cur->right != NULL && cur->right->left == NULL && cur->right->right == NULL)
 			{
+					printf("2\n");
 				cur->right->left = cur->left;
 
 				if (prev->left == cur)
@@ -537,6 +539,7 @@ del_node(struct Node** root, int data)
 			}
 			else if (cur->left != NULL && cur->left->left == NULL && cur->left->right == NULL)
 			{
+					printf("3\n");
 				cur->left->right = cur->right;
 
 				if (prev->left == cur)
@@ -546,6 +549,60 @@ del_node(struct Node** root, int data)
 
 				free(cur);
 				cur = NULL;
+			}
+			else if (cur->right != NULL && (cur->right->left == NULL || cur->right->right == NULL))
+			{
+					printf("4\n");
+				if (cur->right->left == NULL)
+				{
+					cur->right->left = cur->left;
+
+					if (prev->left == cur)
+						prev->left = cur->right;
+					else if (prev->right == cur)
+						prev->right = cur->right;
+
+					free(cur);
+					cur = NULL;
+				}
+				else
+				{
+					// Ne valja
+					cur->left->right = cur->right;
+
+					if (prev->left == cur)
+						prev->left = cur->left;
+					else if (prev->right == cur)
+						prev->right = cur->left;
+
+					free(cur);
+					cur = NULL;
+				}
+			}
+			else if (cur->left != NULL && (cur->left->left == NULL || cur->left->right == NULL))
+			{
+				if (cur->left->left == NULL)
+				{
+					// Ne valja
+					cur->left->right = cur->right;
+					
+				}
+				else
+				{
+					cur->left->right = cur->right;
+
+					// TO_DO: Should traverse through all subtree nodes and decrease level value
+					// cur->left->level--;
+					// cur->left->left->level--;
+
+					if (prev->left == cur)
+						prev->left = cur->left;
+					else if (prev->right == cur)
+						prev->right = cur->left;
+
+					free(cur);
+					cur = NULL;
+				}
 			}
 		}
 		else
@@ -558,5 +615,6 @@ del_node(struct Node** root, int data)
 				cur = cur->right;
 		}
 	}
+
 	printf("\n\tNode %d has been successfuly removed and the Tree remained sorted!\n\n", data);
 }
