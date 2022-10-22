@@ -495,3 +495,68 @@ visual_print(struct Node* head)
 
 	printf("\n\n");
 }
+
+
+void
+del_node(struct Node** root, int data)
+{
+	if ((*root)->data == data && (*root)->left == NULL && (*root)->right == NULL)
+	{
+		(*root) = NULL;
+		return;
+	}
+
+	struct Node* prev = NULL;
+	struct Node* cur = (*root);
+
+	while (cur != NULL)
+	{
+		if (cur->data == data)
+		{
+			if (cur->left == NULL && cur->right == NULL)
+			{
+				if (prev->left == cur)
+					prev->left = NULL;
+				else if (prev->right == cur)
+					prev->right = NULL;
+
+				free(cur);
+				cur = NULL;
+			}
+			else if(cur->right != NULL && cur->right->left == NULL && cur->right->right == NULL)
+			{
+				cur->right->left = cur->left;
+
+				if (prev->left == cur)
+					prev->left = cur->right;
+				else if (prev->right == cur)
+					prev->right = cur->right;
+
+				free(cur);
+				cur = NULL;
+			}
+			else if (cur->left != NULL && cur->left->left == NULL && cur->left->right == NULL)
+			{
+				cur->left->right = cur->right;
+
+				if (prev->left == cur)
+					prev->left = cur->left;
+				else if (prev->right == cur)
+					prev->right = cur->left;
+
+				free(cur);
+				cur = NULL;
+			}
+		}
+		else
+		{
+			prev = cur;
+
+			if (data < cur->data)
+				cur = cur->left;
+			else
+				cur = cur->right;
+		}
+	}
+	printf("\n\tNode %d has been successfuly removed and the Tree remained sorted!\n\n", data);
+}

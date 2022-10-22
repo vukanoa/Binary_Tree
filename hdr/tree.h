@@ -11,8 +11,9 @@ struct Node{
 };
 
 // Binary Tree functions
-void insert	(struct Node** root, int data);
-void find	(struct Node*  root, int data);
+void insert	 (struct Node** root, int data);
+void find	 (struct Node*  root, int data);
+void del_node(struct Node** root, int data);
 
 /* Orders of printing */
 
