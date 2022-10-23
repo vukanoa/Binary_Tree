@@ -3,7 +3,7 @@
 #include "tree.h"
 #define EMPTY_STACK -1
 #define HEIGHT 4
-#define QUEUE_FRONT 0
+#define POSITION_BEFORE_QUEUE -1
 #define LAST_LEVEL_SPACES 3
 
 int height_tree;
@@ -210,31 +210,47 @@ iter_print_postorder(struct Node* root)
 	free(stack_2);
 }
 
+
 void
 iter_print_levelorder(struct Node* root)
 {
 	if (root == NULL)
 		return;
 	
-	int front = QUEUE_FRONT;
-	int rear  = QUEUE_FRONT;
-	struct Node** queue = (struct Node**) malloc(sizeof(struct Node*) * pow(2, HEIGHT - 1));
+	int front = POSITION_BEFORE_QUEUE;
+	int rear  = POSITION_BEFORE_QUEUE;
+
+	// This was the error. Glibc doesn't recognize 'pow' for some reason.
+	// Plus I allocated less space than I used so I added mod with 'queue_size'
+
+	int queue_size = int_pow(2, height_tree - 1);
+	struct Node** queue = malloc(sizeof(struct Node*) * queue_size);
 	
+	printf("\t");
 	for(;;)
 	{
 		printf("%d ", root->data);
 
 		if (root->left != NULL)
-			queue[rear++] = root->left;
+		{
+			rear = (rear + 1) % queue_size;
+			queue[rear] = root->left;
+		}
 
 		if (root->right != NULL)
-			queue[rear++] = root->right;
+		{
+			rear = (rear + 1) % queue_size;
+			queue[rear] = root->right;
+		}
 
-		if (front == rear)
+		if (front == rear && queue[front] == NULL)
 			break;
 
-		root = queue[front++];
+		front = (front + 1) % queue_size;
+		root = queue[front];
+		queue[front] = NULL;
 	}
+	printf("\n");
 	free(queue);
 }
 
@@ -314,8 +330,8 @@ visual_print(struct Node* head)
 		return;
 
 	// Queue
-	struct Node** queue = malloc(sizeof(struct Node*) * (int_pow(2, height_tree) - 1));	
-	int front = 1;
+	struct Node** queue = malloc(sizeof(struct Node*) * (int_pow(2, height_tree + 1)));	// +1 because Leaves have NULL nodes
+	int front = 1; // Root is processed in First Iteration
 	int rear  = 0;
 
 	// Util variables
@@ -328,11 +344,12 @@ visual_print(struct Node* head)
 
 	// Fill the Queue
 	queue[rear++] = head;
-	while (front < int_pow(2, height_tree))
+	while (front < (int_pow(2, height_tree)))
 	{
 		if (head == NULL)
 		{
 			head = queue[front++];
+
 			queue[rear++] = NULL;
 			queue[rear++] = NULL;
 

@@ -18,31 +18,42 @@ main()
 
 
 	/* Tests: 10 - 18 */
+	// insert(&root, 5);
+	// insert(&root, 8);
+	// insert(&root, 3);
+	// insert(&root, 10);
+	// insert(&root, 7);
+	// insert(&root, 1);
+
+	// insert(&root, 11);
+	// insert(&root, 6);
+	// insert(&root, 9);
+	// insert(&root, 0);
+	// insert(&root, 4);
+
 	insert(&root, 5);
 	insert(&root, 8);
-	insert(&root, 3);
-	insert(&root, 10);
+	insert(&root, 2);
+	insert(&root, 9);
 	insert(&root, 7);
 	insert(&root, 1);
+	insert(&root, 4);
 
-	insert(&root, 11);
+	insert(&root, 12);
+	insert(&root, 13);
+	insert(&root, 10);
 	insert(&root, 6);
-	insert(&root, 9);
-	insert(&root, 0);
-	// insert(&root, 4); // Corrups the Heap
+	insert(&root, 3);
 
-
+	printf("Level order:\n");
+	iter_print_levelorder(root);
 /*
 		5
 	2		8
   1	   	  7   9
 */
-	printf("\n");
-	printf("Level order: (Iterative)\n\t");
-	iter_print_levelorder(root);
-	printf("\n\n");
-
 	visual_print(root);
+
 
 							/* [Tests: 1, 2 & 3] */
 	/* Delete Leaves */
@@ -63,10 +74,10 @@ main()
 	// del_node(&root, 8); // Added 6
 	// del_node(&root, 8); // 2nd set of Tests
 	// del_node(&root, 8); // Right child has both left and right, but Left child does not
-	del_node(&root, 2);
+	// del_node(&root, 2);
 
-	visual_print(root);
-
+	// visual_print(root);
 
 	return 0;
 }
+
