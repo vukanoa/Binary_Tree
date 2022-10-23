@@ -517,6 +517,9 @@ visual_print(struct Node* head)
 void
 del_node(struct Node** root, int data)
 {
+	if ((*root) == NULL)
+		return;
+
 	if ((*root)->data == data && (*root)->left == NULL && (*root)->right == NULL)
 	{
 		(*root) = NULL;
@@ -532,7 +535,6 @@ del_node(struct Node** root, int data)
 		{
 			if (cur->left == NULL && cur->right == NULL)
 			{
-					printf("1\n");
 				if (prev->left == cur)
 					prev->left = NULL;
 				else if (prev->right == cur)
@@ -543,7 +545,6 @@ del_node(struct Node** root, int data)
 			}
 			else if(cur->right != NULL && cur->right->left == NULL && cur->right->right == NULL)
 			{
-					printf("2\n");
 				cur->right->left = cur->left;
 
 				if (prev->left == cur)
@@ -556,7 +557,6 @@ del_node(struct Node** root, int data)
 			}
 			else if (cur->left != NULL && cur->left->left == NULL && cur->left->right == NULL)
 			{
-					printf("3\n");
 				cur->left->right = cur->right;
 
 				if (prev->left == cur)
@@ -569,7 +569,6 @@ del_node(struct Node** root, int data)
 			}
 			else if (cur->right != NULL && (cur->right->left == NULL || cur->right->right == NULL))
 			{
-					printf("4\n");
 				if (cur->right->left == NULL)
 				{
 					cur->right->left = cur->left;
@@ -612,6 +611,7 @@ del_node(struct Node** root, int data)
 					// cur->left->level--;
 					// cur->left->left->level--;
 
+					// What if this is HEAD?
 					if (prev->left == cur)
 						prev->left = cur->left;
 					else if (prev->right == cur)
@@ -630,6 +630,12 @@ del_node(struct Node** root, int data)
 				cur = cur->left;
 			else
 				cur = cur->right;
+
+			if (cur == NULL)
+			{
+				printf("\n\tNode %d does NOT exist in the Tree!\n\n", data); 
+				return;
+			}
 		}
 	}
 
