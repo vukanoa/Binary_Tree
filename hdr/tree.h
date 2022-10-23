@@ -15,6 +15,8 @@ void insert	 (struct Node** root, int data);
 void find	 (struct Node*  root, int data);
 void del_node(struct Node** root, int data);
 
+struct Node* del_node_recursively(struct Node* root, int data);
+
 /* Orders of printing */
 
 // Recursive priting
@@ -36,5 +38,7 @@ int int_pow(int base, int exp);
 int calculate_spaces(int levels, int head_level);
 int check_power_of_two(int number);
 int which_power_of_two(int two_pow);
+
+struct Node* find_min(struct Node* root);
 
 #endif //TREE_H
