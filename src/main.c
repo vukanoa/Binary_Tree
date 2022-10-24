@@ -29,6 +29,8 @@ main()
 	// =================================
 
 	/* CASE 1: Delete Leaves */
+
+	/* Iterative */
 	// del_node(&root, 1);
 	// del_node(&root, 4);
 	// del_node(&root, 9);
@@ -37,33 +39,69 @@ main()
 	// del_node(&root, 16);
 	// del_node(&root, 21);
 
+	/* Recursive */
+	// del_node_recursively(root, 1);
+	// del_node_recursively(root, 4);
+	// del_node_recursively(root, 9);
+	// del_node_recursively(root, 11);
+	// del_node_recursively(root, 13);
+	// del_node_recursively(root, 16);
+	// del_node_recursively(root, 21);
+
 
 
 	/* CASE 2: Delete parent of children without either left or right subtree */
+
+	/* Iterative */
 	// del_node(&root, 2);
 	// del_node(&root, 5);
 	// del_node(&root, 10); // Comment line 15 // insert(&root, 11); // Uncomment after
 
+	/* Recursive */
+	// del_node_recursively(root, 2);
+	// del_node_recursively(root, 5);
+	// del_node_recursively(root, 10); // Comment line 15 // insert(&root, 11); // Uncomment after
 
 
 	/* CASE 3: Delete parent of children that have both subtrees */
+
+	/* Iterative */
 	// del_node(&root, 3);
 	// del_node(&root, 10);
 	// del_node(&root, 15);
 	// del_node(&root, 18);
 	// del_node(&root, 12);
-	del_node(&root, 7); // Delete Root
+	// del_node(&root, 7); // Delete Root
 
+	/* Recursive */
+	// del_node_recursively(root, 3);
+	// del_node_recursively(root, 10);
+	// del_node_recursively(root, 15);
+	// del_node_recursively(root, 18);
+	// del_node_recursively(root, 12);
+	del_node_recursively(root, 7); // Delete Root
 
 
 								/* Special cases */
 	/* Non-existent Node */
+
+	/* Iterative */
 	// del_node(&root, 6);
+
+	/* Recursive */
+	// del_node_recursively(root, 6);
+
+
 
 	/* Empty Tree */
 	// Comment lines [8 - 22] // Including 8 and 22
+
+	/* Iterative */
 	// del_node(&root, 3);
 	
+	/* Recursive */
+	// del_node_recursively(root, 3);
+
 
 	printf("\n\n\n");
 

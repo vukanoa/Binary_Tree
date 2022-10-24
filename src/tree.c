@@ -603,6 +603,49 @@ del_node(struct Node** root, int data)
 }
 
 
+struct Node*
+del_node_recursively(struct Node* root, int data)
+{
+	if (root == NULL)
+		return NULL;
+	else if (data < root->data)
+		root->left = del_node_recursively(root->left, data);
+	else if (data > root->data)
+		root->right = del_node_recursively(root->right, data);
+	else
+	{
+		// Case 1: No children
+		if (root->left == NULL && root->right == NULL)
+		{
+			free(root);
+			root = NULL;
+		}
+		// Case 2: Either Left or Right child does NOT exist
+		else if (root->left == NULL)
+		{
+			struct Node* tmp = root;
+			root = root->right;
+			free(tmp);
+		}
+		else if (root->right == NULL)
+		{
+			struct Node* tmp = root;
+			root = root->left;
+			free(tmp);
+		}
+		// Case 3: Both children exist
+		else
+		{
+			struct Node* tmp = find_min(root->right);
+			root->data = tmp->data;
+			root->right = del_node_recursively(root->right, tmp->data);
+		}
+	}
+
+	return root;
+}
+
+
 int
 find_min_data(struct Node* root)
 {
@@ -610,4 +653,14 @@ find_min_data(struct Node* root)
 		root = root->left;
 	
 	return root->data;
+}
+
+
+struct Node*
+find_min(struct Node* root)
+{
+	while (root->left != NULL)
+		root = root->left;
+	
+	return root;
 }
