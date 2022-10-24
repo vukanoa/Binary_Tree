@@ -3,7 +3,7 @@
 #include "tree.h"
 #define EMPTY_STACK -1
 #define HEIGHT 4
-#define QUEUE_FRONT 0
+#define POSITION_BEFORE_QUEUE -1
 #define LAST_LEVEL_SPACES 3
 
 int height_tree;
@@ -210,31 +210,47 @@ iter_print_postorder(struct Node* root)
 	free(stack_2);
 }
 
+
 void
 iter_print_levelorder(struct Node* root)
 {
 	if (root == NULL)
 		return;
 	
-	int front = QUEUE_FRONT;
-	int rear  = QUEUE_FRONT;
-	struct Node** queue = malloc(sizeof(struct Node*) * pow(2, HEIGHT - 1));
+	int front = POSITION_BEFORE_QUEUE;
+	int rear  = POSITION_BEFORE_QUEUE;
+
+	// This was the error. Glibc doesn't recognize 'pow' for some reason.
+	// Plus I allocated less space than I used so I added mod with 'queue_size'
+
+	int queue_size = int_pow(2, height_tree - 1);
+	struct Node** queue = malloc(sizeof(struct Node*) * queue_size);
 	
+	printf("\t");
 	for(;;)
 	{
 		printf("%d ", root->data);
 
 		if (root->left != NULL)
-			queue[rear++] = root->left;
+		{
+			rear = (rear + 1) % queue_size;
+			queue[rear] = root->left;
+		}
 
 		if (root->right != NULL)
-			queue[rear++] = root->right;
+		{
+			rear = (rear + 1) % queue_size;
+			queue[rear] = root->right;
+		}
 
-		if (front == rear)
+		if (front == rear && queue[front] == NULL)
 			break;
 
-		root = queue[front++];
+		front = (front + 1) % queue_size;
+		root = queue[front];
+		queue[front] = NULL;
 	}
+	printf("\n");
 	free(queue);
 }
 
@@ -314,8 +330,8 @@ visual_print(struct Node* head)
 		return;
 
 	// Queue
-	struct Node** queue = malloc(sizeof(struct Node*) * (int_pow(2, height_tree) - 1));	
-	int front = 1;
+	struct Node** queue = malloc(sizeof(struct Node*) * (int_pow(2, height_tree + 1)));	// +1 because Leaves have NULL nodes
+	int front = 1; // Root is processed in First Iteration
 	int rear  = 0;
 
 	// Util variables
@@ -328,11 +344,12 @@ visual_print(struct Node* head)
 
 	// Fill the Queue
 	queue[rear++] = head;
-	while (front < int_pow(2, height_tree))
+	while (front < (int_pow(2, height_tree)))
 	{
 		if (head == NULL)
 		{
 			head = queue[front++];
+
 			queue[rear++] = NULL;
 			queue[rear++] = NULL;
 
@@ -494,4 +511,156 @@ visual_print(struct Node* head)
 	free(queue);
 
 	printf("\n\n");
+}
+
+
+void
+del_node(struct Node** root, int data)
+{
+	if ((*root) == NULL)
+	{
+		printf("\n\tTree is Empty! Unable to delete Node %d\n\n", data);
+		return;
+	}
+
+	if ((*root)->data == data && (*root)->left == NULL && (*root)->right == NULL)
+	{
+		(*root) = NULL;
+		return;
+	}
+
+	struct Node* prev = NULL;
+	struct Node* cur = (*root);
+
+	while (cur != NULL)
+	{
+		if (cur->data == data)
+		{
+			/* Case 1: Delete Leaves */
+			if (cur->left == NULL && cur->right == NULL)
+			{
+				if (prev->left == cur)
+					prev->left = NULL;
+				else
+					prev->right = NULL;
+			}
+			/* Case 2: Delete parent with one child */
+			else if (cur->left == NULL && cur->right != NULL)
+			{
+				if (prev->left == cur)
+					prev->left = cur->right;
+				else
+					prev->right = cur->right;
+			}
+			else if (cur->left != NULL && cur->right == NULL)
+			{
+				if (prev->left == cur)
+					prev->left = cur->left;
+				else
+					prev->right = cur->left;
+			}
+			/* Case 3: Delete parent with both left and right child */
+			else
+			{
+				cur->data = find_min_data(cur->right);
+				int tmp_data = cur->data;
+
+				prev = cur;
+				cur = cur->right;
+
+				if (cur->data == tmp_data)
+					prev->right = NULL;
+				else
+				{
+					while (cur->data != tmp_data)
+					{
+						prev = cur;
+						cur = cur->left;
+					}
+					prev->left = NULL;
+				}
+			}
+			free(cur);
+			cur = NULL;
+		}
+		else
+		{
+			prev = cur;
+			if (data < cur->data)
+				cur = cur->left;
+			else
+				cur = cur->right;
+
+			if (cur == NULL)
+			{
+				printf("\n\tNode %d does NOT exist in the Tree!\n", data);
+				return;
+			}
+		}
+	}
+
+	printf("\n\tNode %d has been successfuly removed and the Tree remained sorted!\n\n", data);
+}
+
+
+struct Node*
+del_node_recursively(struct Node* root, int data)
+{
+	if (root == NULL)
+		return NULL;
+	else if (data < root->data)
+		root->left = del_node_recursively(root->left, data);
+	else if (data > root->data)
+		root->right = del_node_recursively(root->right, data);
+	else
+	{
+		// Case 1: No children
+		if (root->left == NULL && root->right == NULL)
+		{
+			free(root);
+			root = NULL;
+		}
+		// Case 2: Either Left or Right child does NOT exist
+		else if (root->left == NULL)
+		{
+			struct Node* tmp = root;
+			root = root->right;
+			free(tmp);
+		}
+		else if (root->right == NULL)
+		{
+			struct Node* tmp = root;
+			root = root->left;
+			free(tmp);
+		}
+		// Case 3: Both children exist
+		else
+		{
+			struct Node* tmp = find_min(root->right);
+			root->data = tmp->data;
+			root->right = del_node_recursively(root->right, tmp->data);
+		}
+	}
+
+	return root;
+}
+
+
+int
+find_min_data(struct Node* root)
+{
+	while (root->left != NULL)
+		root = root->left;
+	
+	return root->data;
+}
+
+
+struct Node*
+find_min(struct Node* root)
+{
+	while (root->left != NULL)
+		root = root->left;
+	
+	return root;
 }

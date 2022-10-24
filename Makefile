@@ -1,5 +1,5 @@
 CC	:= gcc
-CLFAGS	:= -O0 -g -Wall
+CFLAGS	:= -O0 -g -Wall -fsanitize=address
 TARGET	:= program
 BUILD	:= build
 SRCDIR	:= src
@@ -29,3 +29,5 @@ $(BUILD):
 
 clean:
 	rm -rf $(TARGET) $(BUILD)
+
+
