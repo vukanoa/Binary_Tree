@@ -5,79 +5,70 @@ main()
 {
 	struct Node* root = NULL;
 
-	/* Tests 1 - 9 */
-	// insert(&root, 5);
-	// insert(&root, 8);
-	// insert(&root, 2);
-	// insert(&root, 9);
-	// insert(&root, 7);
-	// insert(&root, 1);
-
-	// insert(&root, 11); // Test 5
-	// insert(&root, 6); // Test 6
-
-
-	/* Tests: 10 - 18 */
-	// insert(&root, 5);
-	// insert(&root, 8);
-	// insert(&root, 3);
-	// insert(&root, 10);
-	// insert(&root, 7);
-	// insert(&root, 1);
-
-	// insert(&root, 11);
-	// insert(&root, 6);
-	// insert(&root, 9);
-	// insert(&root, 0);
-	// insert(&root, 4);
-
-	insert(&root, 5);
-	insert(&root, 8);
-	insert(&root, 2);
-	insert(&root, 9);
 	insert(&root, 7);
-	insert(&root, 1);
-	insert(&root, 4);
-
 	insert(&root, 12);
-	insert(&root, 13);
+	insert(&root, 5);
+	insert(&root, 18);
 	insert(&root, 10);
-	insert(&root, 6);
 	insert(&root, 3);
+	insert(&root, 9);
+	insert(&root, 11);
+	insert(&root, 15);
+	insert(&root, 21);
+	insert(&root, 13);
+	insert(&root, 16);
+	insert(&root, 4);
+	insert(&root, 2);
+	insert(&root, 1);
 
-	printf("Level order:\n");
-	iter_print_levelorder(root);
-/*
-		5
-	2		8
-  1	   	  7   9
-*/
+	// Print before deletion
 	visual_print(root);
 
+	// =================================
+	// ============= TESTS =============
+	// =================================
 
-							/* [Tests: 1, 2 & 3] */
-	/* Delete Leaves */
+	/* CASE 1: Delete Leaves */
 	// del_node(&root, 1);
-	// del_node(&root, 7);
+	// del_node(&root, 4);
 	// del_node(&root, 9);
-
-	
-							/* [Tests: 4, 5 & 6] */
-	/* Delete parent of Leaves  */
-	// del_node(&root, 8); // 9(Right one) is a Leaf // Test 4
-	// del_node(&root, 8); // 9(Right one) is NOT a Leaf and 7(Left one) is [Added 11]
-	// del_node(&root, 2); // (Right one) doesn't exist and 1(Left one) is a Leaf
+	// del_node(&root, 11);
+	// del_node(&root, 13);
+	// del_node(&root, 16);
+	// del_node(&root, 21);
 
 
-							/* [Tests: 7, 8, 9] */
-	/* Delete parent of children without left or right subtree */
-	// del_node(&root, 8); // Added 6
-	// del_node(&root, 8); // 2nd set of Tests
-	// del_node(&root, 8); // Right child has both left and right, but Left child does not
+
+	/* CASE 2: Delete parent of children without either left or right subtree */
 	// del_node(&root, 2);
+	// del_node(&root, 5);
+	// del_node(&root, 10); // Comment line 15 // insert(&root, 11); // Uncomment after
 
-	// visual_print(root);
+
+
+	/* CASE 3: Delete parent of children that have both subtrees */
+	// del_node(&root, 3);
+	// del_node(&root, 10);
+	// del_node(&root, 15);
+	// del_node(&root, 18);
+	// del_node(&root, 12);
+	del_node(&root, 7); // Delete Root
+
+
+
+								/* Special cases */
+	/* Non-existent Node */
+	// del_node(&root, 6);
+
+	/* Empty Tree */
+	// Comment lines [8 - 22] // Including 8 and 22
+	// del_node(&root, 3);
+	
+
+	printf("\n\n\n");
+
+	// Print after deletion
+	visual_print(root);
 
 	return 0;
 }
-

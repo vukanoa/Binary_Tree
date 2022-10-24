@@ -37,4 +37,6 @@ int calculate_spaces(int levels, int head_level);
 int check_power_of_two(int number);
 int which_power_of_two(int two_pow);
 
+int find_min_data(struct Node* root);
+
 #endif //TREE_H

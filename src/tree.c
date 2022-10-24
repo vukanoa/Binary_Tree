@@ -517,6 +517,12 @@ visual_print(struct Node* head)
 void
 del_node(struct Node** root, int data)
 {
+	if ((*root) == NULL)
+	{
+		printf("\n\tTree is Empty! Unable to delete Node %d\n\n", data);
+		return;
+	}
+
 	if ((*root)->data == data && (*root)->left == NULL && (*root)->right == NULL)
 	{
 		(*root) = NULL;
@@ -530,108 +536,78 @@ del_node(struct Node** root, int data)
 	{
 		if (cur->data == data)
 		{
+			/* Case 1: Delete Leaves */
 			if (cur->left == NULL && cur->right == NULL)
 			{
-					printf("1\n");
 				if (prev->left == cur)
 					prev->left = NULL;
-				else if (prev->right == cur)
+				else
 					prev->right = NULL;
-
-				free(cur);
-				cur = NULL;
 			}
-			else if(cur->right != NULL && cur->right->left == NULL && cur->right->right == NULL)
+			/* Case 2: Delete parent with one child */
+			else if (cur->left == NULL && cur->right != NULL)
 			{
-					printf("2\n");
-				cur->right->left = cur->left;
-
 				if (prev->left == cur)
 					prev->left = cur->right;
-				else if (prev->right == cur)
+				else
 					prev->right = cur->right;
-
-				free(cur);
-				cur = NULL;
 			}
-			else if (cur->left != NULL && cur->left->left == NULL && cur->left->right == NULL)
+			else if (cur->left != NULL && cur->right == NULL)
 			{
-					printf("3\n");
-				cur->left->right = cur->right;
-
 				if (prev->left == cur)
 					prev->left = cur->left;
-				else if (prev->right == cur)
+				else
 					prev->right = cur->left;
-
-				free(cur);
-				cur = NULL;
 			}
-			else if (cur->right != NULL && (cur->right->left == NULL || cur->right->right == NULL))
+			/* Case 3: Delete parent with both left and right child */
+			else
 			{
-					printf("4\n");
-				if (cur->right->left == NULL)
-				{
-					cur->right->left = cur->left;
+				cur->data = find_min_data(cur->right);
+				int tmp_data = cur->data;
 
-					if (prev->left == cur)
-						prev->left = cur->right;
-					else if (prev->right == cur)
-						prev->right = cur->right;
+				prev = cur;
+				cur = cur->right;
 
-					free(cur);
-					cur = NULL;
-				}
+				if (cur->data == tmp_data)
+					prev->right = NULL;
 				else
 				{
-					// Ne valja
-					cur->left->right = cur->right;
-
-					if (prev->left == cur)
-						prev->left = cur->left;
-					else if (prev->right == cur)
-						prev->right = cur->left;
-
-					free(cur);
-					cur = NULL;
+					while (cur->data != tmp_data)
+					{
+						prev = cur;
+						cur = cur->left;
+					}
+					prev->left = NULL;
 				}
 			}
-			else if (cur->left != NULL && (cur->left->left == NULL || cur->left->right == NULL))
-			{
-				if (cur->left->left == NULL)
-				{
-					// Ne valja
-					cur->left->right = cur->right;
-					
-				}
-				else
-				{
-					cur->left->right = cur->right;
-
-					// TO_DO: Should traverse through all subtree nodes and decrease level value
-					// cur->left->level--;
-					// cur->left->left->level--;
-
-					if (prev->left == cur)
-						prev->left = cur->left;
-					else if (prev->right == cur)
-						prev->right = cur->left;
-
-					free(cur);
-					cur = NULL;
-				}
-			}
+			free(cur);
+			cur = NULL;
 		}
 		else
 		{
 			prev = cur;
-
 			if (data < cur->data)
 				cur = cur->left;
 			else
 				cur = cur->right;
+
+			if (cur == NULL)
+			{
+				printf("\n\tNode %d does NOT exist in the Tree!\n", data);
+				return;
+			}
 		}
 	}
 
 	printf("\n\tNode %d has been successfuly removed and the Tree remained sorted!\n\n", data);
+}
+
+
+int
+find_min_data(struct Node* root)
+{
+	while (root->left != NULL)
+		root = root->left;
+	
+	return root->data;
 }

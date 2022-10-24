@@ -1,5 +1,5 @@
 CC	:= gcc
-CLFAGS	:= -O0 -g -Wall -fsanitize=address
+CFLAGS	:= -O0 -g -Wall -fsanitize=address
 TARGET	:= program
 BUILD	:= build
 SRCDIR	:= src
@@ -14,10 +14,10 @@ DEPS	:= $(patsubst $(SRCDIR)/%.c,$(BUILD)/%.d,$(SRCS))
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CC) -g -Wall -fsanitize=address $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@
 
 $(BUILD)/%.o: $(SRCDIR)/%.c | $(BUILD)
-	$(CC) -g -Wall -fsanitize=address $(HDRS) -c $< -o $@
+	$(CC) $(CFLAGS) $(HDRS) -c $< -o $@
 
 $(BUILD)/%.d: $(SRCDIR)/%.c | $(BUILD)
 	$(CC) $(HDRS) -MM -MT $(BUILD)/$*.o $< > $@
