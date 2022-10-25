@@ -673,3 +673,55 @@ find_min(struct Node* root)
 	
 	return root;
 }
+
+
+struct Node*
+minimal_tree(int* array, int left, int right, int size) // Original Algorithm
+{
+	// Base case
+	if (array == NULL)
+		return NULL;
+
+	struct Node* root = (struct Node*) malloc(sizeof(struct Node));
+	root->data = array[left + size/2];
+	root->left = NULL;
+	root->right = NULL;
+
+	if (left >= right || size == 1) // Leaf
+		return root;
+
+	if (left < right)
+		root->left = minimal_tree(array, left, left + size/2 - 1, size/2);
+
+	if ((left + size/2)  < right)
+		root->right = minimal_tree(array, left + size/2 + 1, right, right - (left+size/2 + 1) + 1); // size/2 - 1 doesn't work for every case
+
+	return root;
+}
+
+
+struct Node*
+minimal_tree_visual(int* array, int left, int right, int size, int level) // My tweak with node->level
+{
+	// Base case
+	if (array == NULL)
+		return NULL;
+
+	struct Node* root = (struct Node*) malloc(sizeof(struct Node));
+	root->data = array[left + size/2];
+	root->left = NULL;
+	root->right = NULL;
+	root->level = level;
+
+	if (left >= right || size == 1) // Leaf
+		return root;
+
+	if (left < right)
+		root->left = minimal_tree_visual(array, left, left + size/2 - 1, size/2, level + 1);
+
+	if ((left + size/2)  < right)
+		root->right = minimal_tree_visual(array, left + size/2 + 1, right, right - (left+size/2 +1) + 1, level + 1);
+
+	height_tree = 5;
+	return root;
+}

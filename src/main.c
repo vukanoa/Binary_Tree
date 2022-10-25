@@ -1,112 +1,151 @@
 #include "tree.h"
+#define ZERO_LEVEL 0
+
 
 int
 main()
 {
 	struct Node* root = NULL;
 
-	insert(&root, 7);
-	insert(&root, 12);
-	insert(&root, 5);
-	insert(&root, 18);
-	insert(&root, 10);
-	insert(&root, 3);
-	insert(&root, 9);
-	insert(&root, 11);
-	insert(&root, 15);
-	insert(&root, 21);
-	insert(&root, 13);
-	insert(&root, 16);
-	insert(&root, 4);
-	insert(&root, 2);
-	insert(&root, 1);
-
-	// Print before deletion
-	visual_print(root);
-
-	// =================================
-	// ============= TESTS =============
-	// =================================
-
-	/* CASE 1: Delete Leaves */
-
-	/* Iterative */
-	// del_node(&root, 1);
-	// del_node(&root, 4);
-	// del_node(&root, 9);
-	// del_node(&root, 11);
-	// del_node(&root, 13);
-	// del_node(&root, 16);
-	// del_node(&root, 21);
-
-	/* Recursive */
-	// del_node_recursively(root, 1);
-	// del_node_recursively(root, 4);
-	// del_node_recursively(root, 9);
-	// del_node_recursively(root, 11);
-	// del_node_recursively(root, 13);
-	// del_node_recursively(root, 16);
-	// del_node_recursively(root, 21);
-
-
-
-	/* CASE 2: Delete parent of children without either left or right subtree */
-
-	/* Iterative */
-	// del_node(&root, 2);
-	// del_node(&root, 5);
-	// del_node(&root, 10); // Comment line 15 // insert(&root, 11); // Uncomment after
-
-	/* Recursive */
-	// del_node_recursively(root, 2);
-	// del_node_recursively(root, 5);
-	// del_node_recursively(root, 10); // Comment line 15 // insert(&root, 11); // Uncomment after
-
-
-	/* CASE 3: Delete parent of children that have both subtrees */
-
-	/* Iterative */
-	// del_node(&root, 3);
-	// del_node(&root, 10);
-	// del_node(&root, 15);
-	// del_node(&root, 18);
-	// del_node(&root, 12);
-	// del_node(&root, 7); // Delete Root
-
-	/* Recursive */
-	// del_node_recursively(root, 3);
-	// del_node_recursively(root, 10);
-	// del_node_recursively(root, 15);
-	// del_node_recursively(root, 18);
-	// del_node_recursively(root, 12);
-	del_node_recursively(root, 7); // Delete Root
-
-
-								/* Special cases */
-	/* Non-existent Node */
-
-	/* Iterative */
-	// del_node(&root, 6);
-
-	/* Recursive */
-	// del_node_recursively(root, 6);
-
-
-
-	/* Empty Tree */
-	// Comment lines [8 - 22] // Including 8 and 22
-
-	/* Iterative */
-	// del_node(&root, 3);
+	// ==========================================
+	// ================= TEST 1 =================
+	// ==========================================
 	
-	/* Recursive */
-	// del_node_recursively(root, 3);
+	int size = 16;
+	int array[size];
 
+	// Fill the array
+	for (int i = 0; i < size; i++)
+		array[i] = i + 1;
 
+	/* Minimal Tree */
+	root = minimal_tree(array, 0, size-1, size);
+
+	printf("\n\n\tMinimal Tree:\n\t\t\t");
+	print_inorder(root);
 	printf("\n\n\n");
 
-	// Print after deletion
+	/* Minimal Tree Visual */
+	root = minimal_tree_visual(array, 0, size-1, size, ZERO_LEVEL);
+
+	printf("\n\n\tMinimal Tree Visual:\n\n");
 	visual_print(root);
+
+
+
+	// ==========================================
+	// ================= TEST 2 =================
+	// ==========================================
+	// size = 7;
+	// array[0] = 1;
+	// array[1] = 3;
+	// array[2] = 5;
+	// array[3] = 6;
+	// array[4] = 7;
+	// array[5] = 9;
+	// array[6] = 11;
+
+	// /* Minimal Tree */
+	// root = minimal_tree(array, 0, size-1, size);
+
+	// printf("\n\n\tMinimal Tree:\n\t\t\t");
+	// print_inorder(root);
+	// printf("\n\n\n");
+
+	// /* Minimal Tree Visual */
+	// root = minimal_tree_visual(array, 0, size-1, size, ZERO_LEVEL);
+
+	// printf("\n\n\tMinimal Tree Visual:\n\n");
+	// visual_print(root);
+
+
+
+	// ==========================================
+	// ================= TEST 3 =================
+	// ==========================================
+	// size = 4;
+	// array[0] = 1;
+	// array[1] = 4;
+	// array[2] = 7;
+	// array[3] = 9;
+
+	// /* Minimal Tree */
+	// root = minimal_tree(array, 0, size-1, size);
+
+	// printf("\n\n\tMinimal Tree:\n\t\t\t");
+	// print_inorder(root);
+	// printf("\n\n\n");
+
+	// /* Minimal Tree Visual */
+	// root = minimal_tree_visual(array, 0, size-1, size, ZERO_LEVEL);
+
+	// printf("\n\n\tMinimal Tree Visual:\n\n");
+	// visual_print(root);
+
+
+
+	// ==========================================
+	// ================= TEST 4 =================
+	// ==========================================
+	// size = 9;
+
+	// // Fill the array
+	// for (int i = 0; i < size; i++)
+	// 	array[i] = i + 1;
+
+	// /* Minimal Tree */
+	// root = minimal_tree(array, 0, size-1, size);
+
+	// printf("\n\n\tMinimal Tree:\n\t\t\t");
+	// print_inorder(root);
+	// printf("\n\n\n");
+
+	// /* Minimal Tree Visual */
+	// root = minimal_tree_visual(array, 0, size-1, size, ZERO_LEVEL);
+
+	// printf("\n\n\tMinimal Tree Visual:\n\n");
+	// visual_print(root);
+
 
 	return 0;
 }
+
+
+	/* TEST 1 */
+	/* 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 */
+	/*
+								9
+					5                       13
+			3            7           11              15
+		 2     4      6     8    10      12      14      16
+	   1
+
+	*/
+
+
+	/* TEST 2 */
+    /* 1 3 5 6 7 9 11 */
+	/*
+				6
+			5       9
+		  1   3   7   11
+	*/
+
+
+	/* TEST 3 */
+	/* 1 4 7 9 */
+	/*
+				4
+			1       7
+					  9
+	*/
+
+	
+	/* TEST 4 */
+	/* 1 2 3 4 5 6 7 8 9 */
+	/*
+					5
+			  3           8
+		   2     4     7     9
+		 1           6
+	*/

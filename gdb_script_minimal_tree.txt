@@ -1,0 +1,14 @@
+break main.c:22
+run
+s
+define jao
+display *array@16
+display left
+display right
+display size
+display (root) ? *root : "NULL"
+display (root->left) ? *((*root)->left) : "NULL"
+display (root->right) ? *((*root)->right) : "NULL"
+end
+layout src
+

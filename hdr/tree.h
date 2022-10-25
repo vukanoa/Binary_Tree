@@ -42,4 +42,9 @@ int which_power_of_two(int two_pow);
 int          find_min_data(struct Node* root);
 struct Node* find_min     (struct Node* root);
 
+
+// Binary Tree Problems
+struct Node* minimal_tree       (int* array, int left, int right, int size);
+struct Node* minimal_tree_visual(int* array, int left, int right, int size, int level);
+
 #endif //TREE_H
