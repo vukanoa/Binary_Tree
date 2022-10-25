@@ -1,0 +1,19 @@
+break tree.c:342
+run
+define jao
+display rear
+display front
+display (root) ? *root : "NULL"
+display (root->left) ? *((*root)->left) : "NULL"
+display (root->right) ? *((*root)->right) : "NULL"
+display *(queue[0])
+display *(queue[1])
+display *(queue[2])
+display *(queue[3])
+display *(queue[4])
+display *(queue[5])
+display *(queue[6])
+display *(queue[7])
+end
+layout src
+

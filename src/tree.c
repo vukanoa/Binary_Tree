@@ -270,13 +270,13 @@ int_pow(int base, int exp)
 
 
 int
-calculate_spaces(int height, int head_level)
+calculate_spaces(int height, int cur_level)
 {
-	if (head_level + 2 > height)
+	if (cur_level + 2 > height)
 		return LAST_LEVEL_SPACES;
 
-	int num_1 = int_pow(2, (height - head_level));
-	int num_2 = int_pow(2, (height - head_level - 2)); 
+	int num_1 = int_pow(2, (height - cur_level));
+	int num_2 = int_pow(2, (height - cur_level - 2)); 
 
 	return num_1 - num_2 - 1;
 }
@@ -323,11 +323,19 @@ which_power_of_two(int number)
 
 
 void
-visual_print(struct Node* head)
+visual_print(struct Node* root)
 {
 	// Base case
-	if (head == NULL)
+	if (root == NULL)
+	{
+		printf("\n\tTree is Empty!\n\n");
 		return;
+	}
+	else if (root != NULL && root->left == NULL && root->right == NULL)
+	{
+		printf("\n\t%d\n\n", root->data);
+		return;
+	}
 
 	// Queue
 	struct Node** queue = malloc(sizeof(struct Node*) * (int_pow(2, height_tree + 1)));	// +1 because Leaves have NULL nodes
@@ -343,12 +351,12 @@ visual_print(struct Node* head)
 
 
 	// Fill the Queue
-	queue[rear++] = head;
+	queue[rear++] = root;
 	while (front < (int_pow(2, height_tree)))
 	{
-		if (head == NULL)
+		if (root == NULL)
 		{
-			head = queue[front++];
+			root = queue[front++];
 
 			queue[rear++] = NULL;
 			queue[rear++] = NULL;
@@ -357,37 +365,37 @@ visual_print(struct Node* head)
 		}
 
 		// Left
-		if (head->left != NULL)
-			queue[rear++] = head->left;
+		if (root->left != NULL)
+			queue[rear++] = root->left;
 		else
 			queue[rear++] = NULL;
 
 		// Right
-		if (head->right != NULL)
-			queue[rear++] = head->right;
+		if (root->right != NULL)
+			queue[rear++] = root->right;
 		else
 			queue[rear++] = NULL;
 
-		head = queue[front++];
+		root = queue[front++];
 	}
 
 	front = 0;
 	rear = int_pow(2, height_tree);
 	while (front < rear - 1)
 	{
-		head = queue[front];
+		root = queue[front];
 		cur_level = which_power_of_two(front+1); // 0
 
 		if (front == 0) // First level
 		{
-			num_of_spaces = calculate_spaces(height_tree, head->level);
+			num_of_spaces = calculate_spaces(height_tree, root->level);
 			first_part = num_of_spaces;
 
 			// Spaces before root Node
 			while (first_part--)
 				printf("%2c", ' ');
 
-			printf("%2d", head->data); // root Node itself
+			printf("%2d", root->data); // root Node itself
 			
 			// Spaces after root Node
 			while (num_of_spaces--)
@@ -401,10 +409,10 @@ visual_print(struct Node* head)
 			{
 				printf("\n");
 				front++;
-				if (head == NULL)
+				if (root == NULL)
 					printf("%2c", ' ');
 				else
-					printf("%2d", head->data);
+					printf("%2d", root->data);
 
 				places_between = int_pow(2, cur_level) - 1;
 				num_of_spaces = calculate_spaces(height_tree, cur_level);
@@ -427,8 +435,8 @@ visual_print(struct Node* head)
 						printf("%2c", ' ');
 					else
 					{
-						head = queue[front];
-						printf("%2d", head->data);
+						root = queue[front];
+						printf("%2d", root->data);
 					}
 					
 					front++;
@@ -459,10 +467,10 @@ visual_print(struct Node* head)
 
 				first_part = num_of_spaces; /* Number of spaces before first element on the level */
 
-				if (head == NULL)
+				if (root == NULL)
 					printf("%2c", ' ');
 				else
-					printf("%2d", head->data);
+					printf("%2d", root->data);
 
 				/*
 					=== for HEIGHT: 5 ===
@@ -494,8 +502,8 @@ visual_print(struct Node* head)
 						printf("%2c", ' ');
 					else
 					{
-						head = queue[front];
-						printf("%2d", head->data);
+						root = queue[front];
+						printf("%2d", root->data);
 					}
 					
 					front++;
@@ -519,12 +527,13 @@ del_node(struct Node** root, int data)
 {
 	if ((*root) == NULL)
 	{
-		printf("\n\tTree is Empty! Unable to delete Node %d\n\n", data);
+		printf("\n\t\tTree is Empty! Unable to delete Node %d\n\n", data);
 		return;
 	}
 
 	if ((*root)->data == data && (*root)->left == NULL && (*root)->right == NULL)
 	{
+		printf("\n\t\tRoot %d was successfully removed!", (*root)->data);
 		(*root) = NULL;
 		return;
 	}
@@ -593,13 +602,13 @@ del_node(struct Node** root, int data)
 
 			if (cur == NULL)
 			{
-				printf("\n\tNode %d does NOT exist in the Tree!\n", data);
+				printf("\n\t\tNode %d does NOT exist in the Tree!\n", data);
 				return;
 			}
 		}
 	}
 
-	printf("\n\tNode %d has been successfuly removed and the Tree remained sorted!\n\n", data);
+	printf("\n\t\tNode %d has been successfuly removed and the Tree remained sorted!\n\n", data);
 }
 
 
