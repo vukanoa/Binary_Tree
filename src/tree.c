@@ -707,6 +707,10 @@ minimal_tree_visual(int* array, int left, int right, int size, int level) // My 
 	if (array == NULL)
 		return NULL;
 
+	// So that you can have multiple Tests run subsequently in one program
+	if (left == 0 && right == size-1)
+		height_tree = 0;
+
 	struct Node* root = (struct Node*) malloc(sizeof(struct Node));
 	root->data = array[left + size/2];
 	root->left = NULL;
@@ -714,7 +718,12 @@ minimal_tree_visual(int* array, int left, int right, int size, int level) // My 
 	root->level = level;
 
 	if (left >= right || size == 1) // Leaf
+	{
+		if (height_tree < level + 1)
+			height_tree = level + 1;
+
 		return root;
+	}
 
 	if (left < right)
 		root->left = minimal_tree_visual(array, left, left + size/2 - 1, size/2, level + 1);
@@ -722,6 +731,5 @@ minimal_tree_visual(int* array, int left, int right, int size, int level) // My 
 	if ((left + size/2)  < right)
 		root->right = minimal_tree_visual(array, left + size/2 + 1, right, right - (left+size/2 +1) + 1, level + 1);
 
-	height_tree = 5;
 	return root;
 }

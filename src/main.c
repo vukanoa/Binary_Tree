@@ -21,14 +21,14 @@ main()
 	/* Minimal Tree */
 	root = minimal_tree(array, 0, size-1, size);
 
-	printf("\n\n\tMinimal Tree:\n\t\t\t");
+	printf("\n\nMinimal Tree:\n\t\t");
 	print_inorder(root);
 	printf("\n\n\n");
 
 	/* Minimal Tree Visual */
 	root = minimal_tree_visual(array, 0, size-1, size, ZERO_LEVEL);
 
-	printf("\n\n\tMinimal Tree Visual:\n\n");
+	printf("\n\nMinimal Tree Visual:\n\n");
 	visual_print(root);
 
 
@@ -48,14 +48,14 @@ main()
 	// /* Minimal Tree */
 	// root = minimal_tree(array, 0, size-1, size);
 
-	// printf("\n\n\tMinimal Tree:\n\t\t\t");
+	// printf("\n\nMinimal Tree:\n\t\t");
 	// print_inorder(root);
 	// printf("\n\n\n");
 
 	// /* Minimal Tree Visual */
 	// root = minimal_tree_visual(array, 0, size-1, size, ZERO_LEVEL);
 
-	// printf("\n\n\tMinimal Tree Visual:\n\n");
+	// printf("\n\nMinimal Tree Visual:\n\n");
 	// visual_print(root);
 
 
@@ -72,14 +72,14 @@ main()
 	// /* Minimal Tree */
 	// root = minimal_tree(array, 0, size-1, size);
 
-	// printf("\n\n\tMinimal Tree:\n\t\t\t");
+	// printf("\n\nMinimal Tree:\n\t\t");
 	// print_inorder(root);
 	// printf("\n\n\n");
 
 	// /* Minimal Tree Visual */
 	// root = minimal_tree_visual(array, 0, size-1, size, ZERO_LEVEL);
 
-	// printf("\n\n\tMinimal Tree Visual:\n\n");
+	// printf("\n\nMinimal Tree Visual:\n\n");
 	// visual_print(root);
 
 
@@ -96,56 +96,16 @@ main()
 	// /* Minimal Tree */
 	// root = minimal_tree(array, 0, size-1, size);
 
-	// printf("\n\n\tMinimal Tree:\n\t\t\t");
+	// printf("\n\nMinimal Tree:\n\t\t");
 	// print_inorder(root);
 	// printf("\n\n\n");
 
 	// /* Minimal Tree Visual */
 	// root = minimal_tree_visual(array, 0, size-1, size, ZERO_LEVEL);
 
-	// printf("\n\n\tMinimal Tree Visual:\n\n");
+	// printf("\n\nMinimal Tree Visual:\n\n");
 	// visual_print(root);
 
 
 	return 0;
 }
-
-
-	/* TEST 1 */
-	/* 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 */
-	/*
-								9
-					5                       13
-			3            7           11              15
-		 2     4      6     8    10      12      14      16
-	   1
-
-	*/
-
-
-	/* TEST 2 */
-    /* 1 3 5 6 7 9 11 */
-	/*
-				6
-			5       9
-		  1   3   7   11
-	*/
-
-
-	/* TEST 3 */
-	/* 1 4 7 9 */
-	/*
-				4
-			1       7
-					  9
-	*/
-
-	
-	/* TEST 4 */
-	/* 1 2 3 4 5 6 7 8 9 */
-	/*
-					5
-			  3           8
-		   2     4     7     9
-		 1           6
-	*/
