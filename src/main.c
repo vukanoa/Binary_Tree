@@ -9,103 +9,160 @@ main()
 
 	// ==========================================
 	// ================= TEST 1 =================
-	// ==========================================
-	
-	int size = 16;
-	int array[size];
+	// ==========================================	
+	insert(&root, 6);
+	insert(&root, 3);
+	insert(&root, 9);
+	insert(&root, 1);
+	insert(&root, 5);
+	insert(&root, 7);
+	insert(&root, 11);
 
-	// Fill the array
-	for (int i = 0; i < size; i++)
-		array[i] = i + 1;
-
-	/* Minimal Tree */
-	root = minimal_tree(array, 0, size-1, size);
-
-	printf("\n\nMinimal Tree:\n\t\t");
-	print_inorder(root);
-	printf("\n\n\n");
-
-	/* Minimal Tree Visual */
-	root = minimal_tree_visual(array, 0, size-1, size, ZERO_LEVEL);
-
-	printf("\n\nMinimal Tree Visual:\n\n");
+	printf("\n\nTree:\n");
 	visual_print(root);
+
+	printf("\n\n\n");
+	printf("\t==============================\n");
+	printf("\t======= LIST OF DEPTHS =======\n");
+	printf("\t==============================\n");
+
+	struct Node** array_pointers = list_of_depths(root);
+
+	for (int i = 0; i < height_of_tree(); i++)
+	{
+		root = array_pointers[i];
+		printf("\n\nLevel %d:\n\t", i);
+		while (root)
+		{
+			if (root->right == NULL)
+				printf("%d", root->data);
+			else
+				printf("%d -> ", root->data);
+
+			root = root->right;
+		}
+	}
+	printf("\n\n\n");
 
 
 
 	// ==========================================
 	// ================= TEST 2 =================
-	// ==========================================
-	// size = 7;
-	// array[0] = 1;
-	// array[1] = 3;
-	// array[2] = 5;
-	// array[3] = 6;
-	// array[4] = 7;
-	// array[5] = 9;
-	// array[6] = 11;
+	// ==========================================	
+	// insert(&root, 6);
 
-	// /* Minimal Tree */
-	// root = minimal_tree(array, 0, size-1, size);
-
-	// printf("\n\nMinimal Tree:\n\t\t");
-	// print_inorder(root);
-	// printf("\n\n\n");
-
-	// /* Minimal Tree Visual */
-	// root = minimal_tree_visual(array, 0, size-1, size, ZERO_LEVEL);
-
-	// printf("\n\nMinimal Tree Visual:\n\n");
+	// printf("\n\nTree:\n");
 	// visual_print(root);
+
+	// printf("\n\n\n");
+	// printf("\t==============================\n");
+	// printf("\t======= LIST OF DEPTHS =======\n");
+	// printf("\t==============================\n");
+
+	// struct Node** array_pointers = list_of_depths(root);
+
+	// for (int i = 0; i < height_of_tree(); i++)
+	// {
+	// 	root = array_pointers[i];
+	// 	printf("\n\nLevel %d:\n\t", i);
+	// 	while (root)
+	// 	{
+	// 		if (root->right == NULL)
+	// 			printf("%d", root->data);
+	// 		else
+	// 			printf("%d -> ", root->data);
+
+	// 		root = root->right;
+	// 	}
+	// }
+	// printf("\n\n\n");
 
 
 
 	// ==========================================
 	// ================= TEST 3 =================
-	// ==========================================
-	// size = 4;
-	// array[0] = 1;
-	// array[1] = 4;
-	// array[2] = 7;
-	// array[3] = 9;
+	// ==========================================	
+	// insert(&root, 6);
+	// insert(&root, 3);
+	// insert(&root, 9);
+	// insert(&root, 1);
+	// insert(&root, 5);
+	// insert(&root, 7);
+	// insert(&root, 11);
+	// insert(&root, 12);
+	// insert(&root, 13);
+	// insert(&root, 8);
 
-	// /* Minimal Tree */
-	// root = minimal_tree(array, 0, size-1, size);
-
-	// printf("\n\nMinimal Tree:\n\t\t");
-	// print_inorder(root);
-	// printf("\n\n\n");
-
-	// /* Minimal Tree Visual */
-	// root = minimal_tree_visual(array, 0, size-1, size, ZERO_LEVEL);
-
-	// printf("\n\nMinimal Tree Visual:\n\n");
+	// printf("\n\nTree:\n");
 	// visual_print(root);
+
+	// printf("\n\n\n");
+	// printf("\t==============================\n");
+	// printf("\t======= LIST OF DEPTHS =======\n");
+	// printf("\t==============================\n");
+
+	// struct Node** array_pointers = list_of_depths(root);
+
+	// for (int i = 0; i < height_of_tree(); i++)
+	// {
+	// 	root = array_pointers[i];
+	// 	printf("\n\nLevel %d:\n\t", i);
+	// 	while (root)
+	// 	{
+	// 		if (root->right == NULL)
+	// 			printf("%d ", root->data);
+	// 		else
+	// 			printf("%d -> ", root->data);
+
+	// 		root = root->right;
+	// 	}
+	// }
+	// printf("\n\n\n");
 
 
 
 	// ==========================================
 	// ================= TEST 4 =================
-	// ==========================================
-	// size = 9;
+	// ==========================================	
+	// insert(&root, 6);
+	// insert(&root, 3);
+	// insert(&root, 9);
+	// insert(&root, 1);
+	// insert(&root, 5);
+	// insert(&root, 7);
+	// insert(&root, 11);
+	// insert(&root, 15);
+	// insert(&root, 18);
+	// insert(&root, 8);
+	// insert(&root, 4);
+	// insert(&root, 14);
+	// insert(&root, 13);
 
-	// // Fill the array
-	// for (int i = 0; i < size; i++)
-	// 	array[i] = i + 1;
-
-	// /* Minimal Tree */
-	// root = minimal_tree(array, 0, size-1, size);
-
-	// printf("\n\nMinimal Tree:\n\t\t");
-	// print_inorder(root);
-	// printf("\n\n\n");
-
-	// /* Minimal Tree Visual */
-	// root = minimal_tree_visual(array, 0, size-1, size, ZERO_LEVEL);
-
-	// printf("\n\nMinimal Tree Visual:\n\n");
+	// printf("\nTree:\n\n");
 	// visual_print(root);
 
+	// printf("\n\n\n");
+	// printf("\t==============================\n");
+	// printf("\t======= LIST OF DEPTHS =======\n");
+	// printf("\t==============================\n");
+
+	// struct Node** array_pointers = list_of_depths(root);
+
+	// for (int i = 0; i < height_of_tree(); i++)
+	// {
+	// 	root = array_pointers[i];
+	// 	printf("\n\nLevel %d:\n\t", i);
+	// 	while (root)
+	// 	{
+	// 		if (root->right == NULL)
+	// 			printf("%d ", root->data);
+	// 		else
+	// 			printf("%d -> ", root->data);
+
+	// 		root = root->right;
+	// 	}
+	// }
+	// printf("\n\n\n");
 
 	return 0;
 }

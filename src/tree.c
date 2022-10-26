@@ -6,7 +6,7 @@
 #define POSITION_BEFORE_QUEUE -1
 #define LAST_LEVEL_SPACES 3
 
-int height_tree;
+int height_tree = -1;
 
 void
 insert(struct Node** root, int data)
@@ -22,7 +22,12 @@ insert(struct Node** root, int data)
 
 	// Check if the Tree is Empty
 	if ((*root) == NULL)
+	{
+		if (level + 1 > height_tree)
+			height_tree = level + 1;
+		
 		(*root) = tmp;
+	}
 	else
 	{
 		struct Node* prev = NULL;
@@ -321,6 +326,12 @@ which_power_of_two(int number)
 	return cnt; // Return the power of two of a given number
 }
 
+
+int
+height_of_tree()
+{
+	return height_tree;
+}
 
 void
 visual_print(struct Node* root)
@@ -732,4 +743,69 @@ minimal_tree_visual(int* array, int left, int right, int size, int level) // My 
 		root->right = minimal_tree_visual(array, left + size/2 + 1, right, right - (left+size/2 +1) + 1, level + 1);
 
 	return root;
+}
+
+
+struct Node**
+list_of_depths(struct Node* root)
+{
+	// Base case
+	if (root == NULL)
+		return NULL;
+
+	int queue_size = int_pow(2, height_tree) - 1; // Nodes in a Perfect Tree
+	struct Node** queue = malloc(sizeof(struct Node*) * queue_size);
+
+
+	struct Node** array_of_lists = malloc(sizeof(struct Node*) * height_tree);
+
+	int front = 1;
+	int rear  = 0;
+
+	queue[rear++] = root;
+	while (front <= rear)
+	{
+		if (root->left)
+			queue[rear++] = root->left;
+
+		if (root->right)
+			queue[rear++] = root->right;
+
+		root = queue[front++];
+	}
+
+	front = 0;
+	struct Node* tail = NULL; /* Normal order in Lists */
+	while (front < rear)
+	{
+		if (array_of_lists[queue[front]->level] == NULL)
+		{
+			/* Normal order in Lists */
+			tail = array_of_lists[queue[front]->level] = queue[front];
+
+			/* Reverse order in Lists */
+			// array_of_lists[queue[front]->level] = queue[front];
+
+			queue[front]->left  = NULL;
+			queue[front]->right = NULL;
+		}
+		else
+		{
+			queue[front]->left  = NULL;
+			queue[front]->right = NULL;
+
+			/* Normal order in Lists */
+			tail->right = queue[front];
+			tail = tail->right;
+
+			/* Reverse order in Lists */
+			// struct Node* tmp = array_of_lists[queue[front]->level];
+			// array_of_lists[queue[front]->level] = queue[front];
+			// array_of_lists[queue[front]->level]->right = tmp;
+		}
+		front++;
+	}
+	printf("\n");
+
+	return array_of_lists;
 }

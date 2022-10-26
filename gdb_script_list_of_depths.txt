@@ -1,0 +1,36 @@
+b main.c:29
+run
+define huhu
+display (array_pointers[0]) ? *array_pointers[0] : "NULL"
+display (array_pointers[1]) ? *array_pointers[1] : "NULL"
+display (array_pointers[2]) ? *array_pointers[2] : "NULL"
+end
+huhu
+s
+define jao
+display (root) ? (*root)->data : "NULL"
+display front
+display rear
+display queue_size
+display (queue[0]) ? *queue[0] : "NULL"
+display (queue[1]) ? *queue[1] : "NULL"
+display (queue[2]) ? *queue[2] : "NULL"
+display (queue[3]) ? *queue[3] : "NULL"
+display (queue[4]) ? *queue[4] : "NULL"
+display (queue[5]) ? *queue[5] : "NULL"
+display (queue[6]) ? *queue[6] : "NULL"
+display front
+display (array_of_lists[0]) ? (*array_of_lists[0]) : "NULL                                          "
+display (array_of_lists[1]) ? (*array_of_lists[1]) : "NULL                                          "
+display (array_of_lists[1]->right) ? *(array_of_lists[1]->right) : "NULL                            "
+display (array_of_lists[2]) ? (*array_of_lists[2]) : "NULL                                          "
+display (array_of_lists[2]->right) ? (*array_of_lists[2]->right) : "NULL                            "
+display (array_of_lists[2]->right->right) ? *(array_of_lists[2]->right->right) : "NULL              "
+display (array_of_lists[2]->right->right->right) ? *(array_of_lists[2]->right->right->right) : "NULL"
+end
+break tree.c:808
+jao
+c
+layout src
+
+

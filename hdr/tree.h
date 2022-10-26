@@ -38,6 +38,7 @@ int int_pow           (int base,   int exp);
 int calculate_spaces  (int levels, int cur_level);
 int check_power_of_two(int number);
 int which_power_of_two(int two_pow);
+int height_of_tree    ();
 
 int          find_min_data(struct Node* root);
 struct Node* find_min     (struct Node* root);
@@ -46,5 +47,6 @@ struct Node* find_min     (struct Node* root);
 // Binary Tree Problems
 struct Node* minimal_tree       (int* array, int left, int right, int size);
 struct Node* minimal_tree_visual(int* array, int left, int right, int size, int level);
+struct Node** list_of_depths(struct Node* root);
 
 #endif //TREE_H
