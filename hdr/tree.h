@@ -51,5 +51,6 @@ struct Node*  minimal_tree_visual    (int* array, int left, int right, int size,
 struct Node** list_of_depths         (struct Node* root);
 int           check_balanced         (struct Node* root);
 int           check_balanced_improved(struct Node* root);
+int           validate_BST           (struct Node* root);
 
 #endif //TREE_H

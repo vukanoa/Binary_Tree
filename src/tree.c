@@ -851,3 +851,31 @@ check_balanced_improved(struct Node* root) // O(N) time, O(H) space[H => height_
 
 	return INT_MIN;
 }
+
+
+int
+validate_BST(struct Node* root)
+{
+	// Base case
+	if (root == NULL)
+		return 1; // Empty Tree is a BST
+
+	/* Left */
+	int left = validate_BST(root->left);
+	if (left == INT_MIN)
+		return INT_MIN;
+
+	if (root->left && root->data <= root->left->data)
+		return INT_MIN;
+	
+
+	/* Right */
+	int right = validate_BST(root->right);
+	if (right == INT_MIN)
+		return INT_MIN;
+	
+	if(root->right && root->data > root->right->data)
+		return INT_MIN;
+
+	return 1;
+}
