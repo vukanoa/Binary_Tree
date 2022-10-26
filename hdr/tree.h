@@ -2,6 +2,7 @@
 #define TREE_H_
 
 #include <stdio.h>
+#include <limits.h>
 
 struct Node{
 	int data;
@@ -45,8 +46,10 @@ struct Node* find_min     (struct Node* root);
 
 
 // Binary Tree Problems
-struct Node* minimal_tree       (int* array, int left, int right, int size);
-struct Node* minimal_tree_visual(int* array, int left, int right, int size, int level);
-struct Node** list_of_depths(struct Node* root);
+struct Node*  minimal_tree           (int* array, int left, int right, int size);
+struct Node*  minimal_tree_visual    (int* array, int left, int right, int size, int level);
+struct Node** list_of_depths         (struct Node* root);
+int           check_balanced         (struct Node* root);
+int           check_balanced_improved(struct Node* root);
 
 #endif //TREE_H

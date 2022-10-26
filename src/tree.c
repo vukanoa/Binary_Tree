@@ -809,3 +809,45 @@ list_of_depths(struct Node* root)
 
 	return array_of_lists;
 }
+
+
+int
+check_balanced(struct Node* root) // O(NlogN)
+{
+	// Base case
+	if (root == NULL)
+		return 0;
+
+	if (root->left == NULL && root->right == NULL)
+		return 1;
+	
+	int left  = check_balanced(root->left);
+	int right = check_balanced(root->right);
+
+	if (abs(left - right) < 2)
+		return (left > right) ? left+1 : right+1;
+
+	return 0;
+}
+
+
+int
+check_balanced_improved(struct Node* root) // O(N) time, O(H) space[H => height_tree]
+{
+	// Base case
+	if (root == NULL)
+		return -1;
+
+	int left = check_balanced_improved(root->left);
+	if (left == INT_MIN)
+		return INT_MIN;
+
+	int right = check_balanced_improved(root->right);
+	if (right == INT_MIN)
+		return INT_MIN;
+
+	if (abs(left - right) < 2)
+		return (left > right) ? left+1 : right+1;
+
+	return INT_MIN;
+}
