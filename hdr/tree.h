@@ -4,10 +4,18 @@
 #include <stdio.h>
 #include <limits.h>
 
+// struct Node{
+// 	int data;
+// 	struct Node* left;
+// 	struct Node* right;
+// 	int level;
+// };
+
 struct Node{
 	int data;
 	struct Node* left;
 	struct Node* right;
+	struct Node* parent;
 	int level;
 };
 
@@ -15,6 +23,7 @@ struct Node{
 void insert(struct Node** root, int data);
 void find  (struct Node*  root, int data);
 
+void         insert_parent       (struct Node** root, int data);
 void         del_node            (struct Node** root, int data);
 struct Node* del_node_recursively(struct Node*  root, int data);
 
@@ -41,8 +50,8 @@ int check_power_of_two(int number);
 int which_power_of_two(int two_pow);
 int height_of_tree    ();
 
-int          find_min_data(struct Node* root);
-struct Node* find_min     (struct Node* root);
+int          find_min_data   (struct Node* root);
+struct Node* find_min        (struct Node* root);
 
 
 // Binary Tree Problems
@@ -52,5 +61,9 @@ struct Node** list_of_depths         (struct Node* root);
 int           check_balanced         (struct Node* root);
 int           check_balanced_improved(struct Node* root);
 int           validate_BST           (struct Node* root);
+struct Node*  successor              (struct Node* root);
+
+// Napravi testove u posebnu funkciju i test.h i test.c fajlove
+// Pokupi sa Github-a i stavi ih u main ili gde vec.
 
 #endif //TREE_H

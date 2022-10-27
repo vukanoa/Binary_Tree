@@ -79,6 +79,74 @@ find(struct Node* root, int data)
 
 
 void
+insert_parent(struct Node** root, int data)
+{
+	// Make a new Node
+	struct Node* tmp = (struct Node*) malloc(sizeof(struct Node));
+	tmp->data   = data;
+	tmp->left   = NULL;
+	tmp->right  = NULL;
+	tmp->parent = NULL;
+	tmp->level  = 0;
+
+	int level = 0;
+
+	// Check if the Tree is Empty
+	if ((*root) == NULL)
+	{
+		if (level + 1 > height_tree)
+			height_tree = level + 1;
+		
+		(*root) = tmp;
+	}
+	else
+	{
+		struct Node* prev = NULL;
+		struct Node* cur  = (*root);
+
+		while (cur != NULL)
+		{
+			level++;
+			prev = cur;
+
+			if (data < cur->data)
+				cur = cur->left;
+			else
+				cur = cur->right;
+		}
+
+		tmp->level = level;
+		if (level + 1 > height_tree)
+			height_tree = level + 1;
+
+
+		if (data < prev->data)
+			prev->left = tmp;
+		else
+			prev->right = tmp;
+
+		tmp->parent = prev;
+	}
+}
+
+
+void
+traverse_to_root(struct Node* leaf)
+{
+	if (leaf == NULL)
+		return;
+
+	printf("\t");
+	while (leaf != NULL)
+	{
+		printf("%d ", leaf->data);
+		leaf = leaf->parent;
+	}
+	printf("\n\n");
+}
+
+
+void
 print_preorder(struct Node* root)
 {
 	if (root == NULL)
@@ -878,4 +946,48 @@ validate_BST(struct Node* root)
 		return INT_MIN;
 
 	return 1;
+}
+
+
+struct Node*
+successor(struct Node* node)
+{
+	// Base case
+	if (node == NULL)
+		return NULL;
+	
+	if (node->right == NULL && node->parent == NULL)
+		return NULL;
+	
+	if (node->right == NULL && node == node->parent->left)
+		return node->parent;
+
+	struct Node* parent;
+
+	if (node->right != NULL)
+	{
+		// Return left most child
+		parent = node;
+		node = node->right;
+		while (node != NULL)
+		{
+			parent = node;
+			node = node->left;
+		}
+
+		return parent;
+	}
+	
+	parent = node->parent;
+	while(parent != NULL)
+	{
+		// Find the parent whose current node is his left child
+		if (node == parent->left)
+			return parent;
+
+		node = parent;
+		parent = parent->parent;
+	}
+
+	return parent;
 }
