@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 #include "tree.h"
+
 #define EMPTY_STACK -1
 #define HEIGHT 4
 #define POSITION_BEFORE_QUEUE -1
@@ -58,27 +60,6 @@ insert(struct Node** root, int data)
 
 
 void
-find(struct Node* root, int data)
-{
-	while (root != NULL)
-	{
-		if (root->data == data)
-		{
-			printf("\n\tNode %d does exist in the Tree!\n\n", data);
-			return;
-		}
-
-		if (data < root->data)
-			root = root->left;
-		else
-			root = root->right;
-	}
-
-	printf("\n\tNode %d does NOT exist in the Tree!\n\n", data);
-}
-
-
-void
 insert_parent(struct Node** root, int data)
 {
 	// Make a new Node
@@ -131,18 +112,81 @@ insert_parent(struct Node** root, int data)
 
 
 void
-traverse_to_root(struct Node* leaf)
+insert_size(struct Node** root, int data)
 {
-	if (leaf == NULL)
-		return;
+	// Make a new Node
+	struct Node* tmp = (struct Node*) malloc(sizeof(struct Node));
+	tmp->data  = data;
+	tmp->left  = NULL;
+	tmp->right = NULL;
+	tmp->level = 0;
+	tmp->size  = 1;
 
-	printf("\t");
-	while (leaf != NULL)
+	int level = 0;
+
+	// Check if the Tree is Empty
+	if ((*root) == NULL)
 	{
-		printf("%d ", leaf->data);
-		leaf = leaf->parent;
+		if (level + 1 > height_tree)
+			height_tree = level + 1;
+		
+		(*root) = tmp;
 	}
-	printf("\n\n");
+	else
+	{
+		struct Node* prev = NULL;
+		struct Node* cur  = (*root);
+
+		while (cur != NULL)
+		{
+			level++;
+			prev = cur;
+
+			if (data < cur->data)
+			{
+				cur->size++;
+				cur = cur->left;
+			}
+			else
+			{
+				cur->size++;
+				cur = cur->right;
+			}
+		}
+
+		tmp->level = level;
+		if (level + 1 > height_tree)
+			height_tree = level + 1;
+
+
+		if (data < prev->data)
+			prev->left = tmp;
+		else
+			prev->right = tmp;
+	}
+
+
+}
+
+
+void
+find(struct Node* root, int data)
+{
+	while (root != NULL)
+	{
+		if (root->data == data)
+		{
+			printf("\n\tNode %d does exist in the Tree!\n\n", data);
+			return;
+		}
+
+		if (data < root->data)
+			root = root->left;
+		else
+			root = root->right;
+	}
+
+	printf("\n\tNode %d does NOT exist in the Tree!\n\n", data);
 }
 
 
@@ -171,7 +215,7 @@ print_inorder(struct Node* root)
 	if (root->left != NULL)
 		print_inorder(root->left);
 	
-	printf("%d ", root->data);
+	printf("%d|%d| ", root->data, root->size);
 
 	if (root->right != NULL)
 		print_inorder(root->right);
@@ -602,7 +646,7 @@ visual_print(struct Node* root)
 
 
 void
-del_node(struct Node** root, int data)
+del_node_iter(struct Node** root, int data)
 {
 	if ((*root) == NULL)
 	{
@@ -692,14 +736,14 @@ del_node(struct Node** root, int data)
 
 
 struct Node*
-del_node_recursively(struct Node* root, int data)
+del_node_rec(struct Node* root, int data)
 {
 	if (root == NULL)
 		return NULL;
 	else if (data < root->data)
-		root->left = del_node_recursively(root->left, data);
+		root->left = del_node_rec(root->left, data);
 	else if (data > root->data)
-		root->right = del_node_recursively(root->right, data);
+		root->right = del_node_rec(root->right, data);
 	else
 	{
 		// Case 1: No children
@@ -726,7 +770,7 @@ del_node_recursively(struct Node* root, int data)
 		{
 			struct Node* tmp = find_min(root->right);
 			root->data = tmp->data;
-			root->right = del_node_recursively(root->right, tmp->data);
+			root->right = del_node_rec(root->right, tmp->data);
 		}
 	}
 
@@ -751,6 +795,20 @@ find_min(struct Node* root)
 		root = root->left;
 	
 	return root;
+}
+
+
+struct Node*
+get_ith_node(struct Node* root, int i)
+{
+	int left_size = root->left ? root->left->size : 0;
+
+	if (i < left_size)
+		return get_ith_node(root->left, i);
+	else if (i == left_size)
+		return root;
+	else
+		return get_ith_node(root->right, i - (left_size + 1));
 }
 
 
@@ -990,4 +1048,17 @@ successor(struct Node* node)
 	}
 
 	return parent;
+}
+
+
+struct Node*
+random_node(struct Node* root)
+{
+	if (root == NULL)
+		return NULL;
+	
+	srand(time(NULL));
+	int i = rand() % root->size;
+
+	return get_ith_node(root, i);
 }
