@@ -582,9 +582,9 @@ visual_print(struct Node* root)
 
 					=== for HEIGHT: 5 ===
 					NOT -> 0) 23 x 23
-						   1) 11 x 23 x 11
-						   2)  5 x 11 x 11 x 11 x 5
-						   3)  2 x 5  x 5  x 5  x 5  x 5  x 5  x 5  x 5  x 2
+					       1) 11 x 23 x 11
+					       2)  5 x 11 x 11 x 11 x 5
+					       3)  2 x 5  x 5  x 5  x 5  x 5  x 5  x 5  x 5  x 2
 					NOT -> 4)  0 x 3  x 1  x 3  x 1  x 3  x 1  x 3  x 1  x 3  x 1  x 3  x 1  x 3  x 1  x 3  x 0
 				*/
 
@@ -881,7 +881,6 @@ list_of_depths(struct Node* root)
 
 	int queue_size = int_pow(2, height_tree) - 1; // Nodes in a Perfect Tree
 	struct Node** queue = malloc(sizeof(struct Node*) * queue_size);
-
 
 	struct Node** array_of_lists = malloc(sizeof(struct Node*) * height_tree);
 
