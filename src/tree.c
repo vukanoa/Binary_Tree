@@ -831,6 +831,33 @@ get_ith_node(struct Node* root, int i)
 
 
 struct Node*
+go_up(struct Node* node, int difference)
+{
+	while (difference > 0 && node != NULL)
+	{
+		node = node->parent;
+		difference--;
+	}
+
+	return node;
+}
+
+
+int
+depth(struct Node* node)
+{
+	int depth = 0;
+	while (node != NULL)
+	{
+		node = node->parent;
+		depth++;
+	}
+
+	return depth;
+}
+
+
+struct Node*
 minimal_tree(int* array, int left, int right, int size) // Original Algorithm
 {
 	// Base case
@@ -1093,6 +1120,27 @@ common_ancestor_0(struct Node* first, struct Node* second)
 	}
 
 	return first == NULL || second == NULL ? NULL : first;
+}
+
+
+struct Node*
+common_ancestor_1(struct Node* first, struct Node* second)
+{
+	int difference = depth(first) - depth(second);
+
+	struct Node* shallower = difference > 0 ? second : first;
+	struct Node* deeper    = difference > 0 ? first  : second;
+
+	deeper = go_up(deeper, abs(difference));
+
+	/* Find where paths intersect(They are at the same level now) */
+	while (shallower != NULL && deeper != NULL && shallower != deeper)
+	{
+		shallower = shallower->parent;
+		deeper    = deeper->parent;
+	}
+
+	return shallower == NULL || deeper == NULL ? NULL : shallower;
 }
 
 

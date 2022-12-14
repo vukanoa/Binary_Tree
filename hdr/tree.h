@@ -56,6 +56,9 @@ int          find_min_data(struct Node* root);
 struct Node* find_min     (struct Node* root);
 struct Node* get_ith_node (struct Node* root, int i);
 
+struct Node* go_up(struct Node* node, int difference);
+int depth(struct Node* node);
+
 
 // Binary Tree Problems
 struct Node*  minimal_tree           (int* array, int left, int right, int size);
@@ -66,6 +69,7 @@ int           check_balanced_improved(struct Node* root);
 int           validate_BST           (struct Node* root);
 struct Node*  successor              (struct Node* root);
 struct Node*  common_ancestor_0      (struct Node* first, struct Node* second); // Parents
+struct Node*  common_ancestor_1      (struct Node* first, struct Node* second); // Parents
 struct Node*  random_node            (struct Node* root);
 
 #endif //TREE_H
