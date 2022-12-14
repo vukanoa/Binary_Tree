@@ -25,6 +25,7 @@ void         insert       (struct Node** root, int data);
 void         insert_parent(struct Node** root, int data);
 void         insert_size  (struct Node** root, int data);
 void         find         (struct Node*  root, int data);
+struct Node* find_ret     (struct Node*  root, int data);
 void         del_node_iter(struct Node** root, int data);
 struct Node* del_node_rec (struct Node*  root, int data);
 
@@ -64,6 +65,7 @@ int           check_balanced         (struct Node* root);
 int           check_balanced_improved(struct Node* root);
 int           validate_BST           (struct Node* root);
 struct Node*  successor              (struct Node* root);
+struct Node*  common_ancestor_0      (struct Node* first, struct Node* second); // Parents
 struct Node*  random_node            (struct Node* root);
 
 #endif //TREE_H

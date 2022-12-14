@@ -27,7 +27,7 @@ insert(struct Node** root, int data)
 	{
 		if (level + 1 > height_tree)
 			height_tree = level + 1;
-		
+
 		(*root) = tmp;
 	}
 	else
@@ -77,7 +77,7 @@ insert_parent(struct Node** root, int data)
 	{
 		if (level + 1 > height_tree)
 			height_tree = level + 1;
-		
+
 		(*root) = tmp;
 	}
 	else
@@ -129,7 +129,7 @@ insert_size(struct Node** root, int data)
 	{
 		if (level + 1 > height_tree)
 			height_tree = level + 1;
-		
+
 		(*root) = tmp;
 	}
 	else
@@ -176,7 +176,7 @@ find(struct Node* root, int data)
 	{
 		if (root->data == data)
 		{
-			printf("\n\tNode %d does exist in the Tree!\n\n", data);
+			printf("\n\tnode %d does exist in the tree!\n\n", data);
 			return;
 		}
 
@@ -186,7 +186,25 @@ find(struct Node* root, int data)
 			root = root->right;
 	}
 
-	printf("\n\tNode %d does NOT exist in the Tree!\n\n", data);
+	printf("\n\tnode %d does not exist in the tree!\n\n", data);
+}
+
+
+struct Node*
+find_ret(struct Node*  root, int data)
+{
+	while (root != NULL)
+	{
+		if (root->data == data)
+			return root;
+
+		if (data < root->data)
+			root = root->left;
+		else
+			root = root->right;
+	}
+
+	return NULL;
 }
 
 
@@ -195,7 +213,7 @@ print_preorder(struct Node* root)
 {
 	if (root == NULL)
 		return;
-	
+
 	printf("%d ", root->data);
 
 	if (root->left != NULL)
@@ -211,10 +229,10 @@ print_inorder(struct Node* root)
 {
 	if (root == NULL)
 		return;
-	
+
 	if (root->left != NULL)
 		print_inorder(root->left);
-	
+
 	printf("%d|%d| ", root->data, root->size);
 
 	if (root->right != NULL)
@@ -227,13 +245,13 @@ print_postorder(struct Node* root)
 {
 	if (root == NULL)
 		return;
-	
+
 	if (root->left != NULL)
 		print_postorder(root->left);
-	
+
 	if (root->right != NULL)
 		print_postorder(root->right);
-	
+
 	printf("%d ", root->data);
 }
 
@@ -268,7 +286,7 @@ iter_print_inorder(struct Node* root)
 {
 	if (root == NULL)
 		return;
-	
+
 	int sp = EMPTY_STACK;
 	struct Node** stack = malloc(sizeof(struct Node*) * HEIGHT);
 
@@ -298,7 +316,7 @@ iter_print_postorder(struct Node* root)
 {
 	if (root == NULL)
 		return;
-	
+
 	int sp_1 = EMPTY_STACK;
 	int sp_2 = EMPTY_STACK;
 	struct Node** stack_1 = malloc(sizeof(struct Node*) * pow(2, HEIGHT));
@@ -333,7 +351,7 @@ iter_print_levelorder(struct Node* root)
 {
 	if (root == NULL)
 		return;
-	
+
 	int front = POSITION_BEFORE_QUEUE;
 	int rear  = POSITION_BEFORE_QUEUE;
 
@@ -342,7 +360,7 @@ iter_print_levelorder(struct Node* root)
 
 	int queue_size = int_pow(2, height_tree - 1);
 	struct Node** queue = malloc(sizeof(struct Node*) * queue_size);
-	
+
 	printf("\t");
 	for(;;)
 	{
@@ -393,7 +411,7 @@ calculate_spaces(int height, int cur_level)
 		return LAST_LEVEL_SPACES;
 
 	int num_1 = int_pow(2, (height - cur_level));
-	int num_2 = int_pow(2, (height - cur_level - 2)); 
+	int num_2 = int_pow(2, (height - cur_level - 2));
 
 	return num_1 - num_2 - 1;
 }
@@ -404,7 +422,7 @@ check_power_of_two(int number)
 {
 	if (number == 0)
 		return 0; // NOT a power of two
-	
+
 	while (number != 1)
 	{
 		if (number % 2 != 0)
@@ -422,7 +440,7 @@ which_power_of_two(int number)
 {
 	if (number % 2 != 0 && number != 1) /* If Odd number except number 1, since number 1 is 2^0 */
 		return 0; // NOT a power of two
-	
+
 	int cnt = 0;
 	for(;;)
 	{
@@ -519,7 +537,7 @@ visual_print(struct Node* root)
 				printf("%2c", ' ');
 
 			printf("%2d", root->data); // root Node itself
-			
+
 			// Spaces after root Node
 			while (num_of_spaces--)
 				printf("%2c", ' ');
@@ -561,7 +579,7 @@ visual_print(struct Node* root)
 						root = queue[front];
 						printf("%2d", root->data);
 					}
-					
+
 					front++;
 					places_between--;
 				}
@@ -628,7 +646,7 @@ visual_print(struct Node* root)
 						root = queue[front];
 						printf("%2d", root->data);
 					}
-					
+
 					front++;
 					places_between--;
 				}
@@ -783,7 +801,7 @@ find_min_data(struct Node* root)
 {
 	while (root->left != NULL)
 		root = root->left;
-	
+
 	return root->data;
 }
 
@@ -793,7 +811,7 @@ find_min(struct Node* root)
 {
 	while (root->left != NULL)
 		root = root->left;
-	
+
 	return root;
 }
 
@@ -945,7 +963,7 @@ check_balanced(struct Node* root) // O(NlogN)
 
 	if (root->left == NULL && root->right == NULL)
 		return 1;
-	
+
 	int left  = check_balanced(root->left);
 	int right = check_balanced(root->right);
 
@@ -992,13 +1010,13 @@ validate_BST(struct Node* root)
 
 	if (root->left && root->data <= root->left->data)
 		return INT_MIN;
-	
+
 
 	/* Right */
 	int right = validate_BST(root->right);
 	if (right == INT_MIN)
 		return INT_MIN;
-	
+
 	if(root->right && root->data > root->right->data)
 		return INT_MIN;
 
@@ -1012,10 +1030,10 @@ successor(struct Node* node)
 	// Base case
 	if (node == NULL)
 		return NULL;
-	
+
 	if (node->right == NULL && node->parent == NULL)
 		return NULL;
-	
+
 	if (node->right == NULL && node == node->parent->left)
 		return node->parent;
 
@@ -1034,7 +1052,7 @@ successor(struct Node* node)
 
 		return parent;
 	}
-	
+
 	parent = node->parent;
 	while(parent != NULL)
 	{
@@ -1051,11 +1069,39 @@ successor(struct Node* node)
 
 
 struct Node*
+common_ancestor_0(struct Node* first, struct Node* second)
+{
+	int difference = first->level - second->level;
+
+	if (difference > 0)
+	{
+		while (difference--)
+			first = first->parent;
+	}
+	else if (difference < 0)
+	{
+		difference = -difference;
+		while (difference--)
+			second = second->parent;
+	}
+
+	/* Now they are at esecondual level */
+	while (first != NULL && second != NULL && first != second)
+	{
+		first = first->parent;
+		second = second->parent;
+	}
+
+	return first == NULL || second == NULL ? NULL : first;
+}
+
+
+struct Node*
 random_node(struct Node* root)
 {
 	if (root == NULL)
 		return NULL;
-	
+
 	srand(time(NULL));
 	int i = rand() % root->size;
 
