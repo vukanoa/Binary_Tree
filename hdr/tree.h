@@ -20,6 +20,11 @@ struct Node{
 	int size;
 };
 
+struct Result{
+	struct Node* node;
+	int is_ancestor;
+};
+
 // Binary Tree functions
 void         insert       (struct Node** root, int data);
 void         insert_parent(struct Node** root, int data);
@@ -74,6 +79,7 @@ struct Node*  common_ancestor_0      (struct Node* first, struct Node* second); 
 struct Node*  common_ancestor_1      (struct Node* first, struct Node* second); // Parents
 struct Node*  common_ancestor_2      (struct Node* root,  struct Node* first, struct Node* second); // Parents
 struct Node*  common_ancestor_3      (struct Node* root,  struct Node* first, struct Node* second);  // w/o Parents
+struct Node*  common_ancestor_4      (struct Node* root,  struct Node* first, struct Node* second);  // w/o Parents
 struct Node*  random_node            (struct Node* root);
 
 #endif //TREE_H

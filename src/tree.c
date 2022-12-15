@@ -901,6 +901,67 @@ ancestor_helper(struct Node* root, struct Node* first, struct Node* second)
 }
 
 
+struct Result*
+common_ancestor_helper(struct Node* root, struct Node* first, struct Node* second)
+{
+	struct Result* result = (struct Result*) malloc(sizeof(struct Result));
+	result->node = NULL;
+	result->is_ancestor = 0;
+
+	if (root == NULL)
+		return result;
+
+	if (root == first && root == second)
+	{
+		result->node = root;
+		result->is_ancestor = 1;
+
+		return result;
+	}
+
+	result->node = NULL;
+	result->is_ancestor = 0;
+
+	struct Result* result_x = common_ancestor_helper(root->left, first, second);
+	if (result_x->is_ancestor)
+		return result_x;
+
+	struct Result* result_y = common_ancestor_helper(root->right, first, second);
+	if (result_y->is_ancestor)
+		return result_y;
+
+	result->node = root;
+	result->is_ancestor = 1;
+	if (result_x->node != NULL && result_y->node != NULL)
+		return result;
+	else if (root == first || root == second)
+	{
+		/*
+			If we're currently at first or second, and we also found one of
+			those nodes in a subtree, then this is truly an ancestor and the
+			flag should be true
+		*/
+		int is_ancestor = result_x->node != NULL || result_y->node != NULL;
+
+		result->node = root;
+		result->is_ancestor = is_ancestor;
+
+		return result;
+	}
+	else
+	{
+		if (result_x->node != NULL)
+			result->node = result_x->node;
+		else
+			result->node = result_y->node;
+
+		result->is_ancestor = 0;
+
+		return result;
+	}
+}
+
+
 struct Node*
 minimal_tree(int* array, int left, int right, int size) // Original Algorithm
 {
@@ -1188,20 +1249,6 @@ common_ancestor_1(struct Node* first, struct Node* second)
 }
 
 
-struct Node*
-random_node(struct Node* root)
-{
-	if (root == NULL)
-		return NULL;
-
-	srand(time(NULL));
-	int i = rand() % root->size;
-
-	return get_ith_node(root, i);
-}
-
-
-
 /* Time  Complexity: O(t)
 
 	Where 't' is the size of the subtree for the first commong ancestor.
@@ -1261,4 +1308,43 @@ common_ancestor_3(struct Node* root, struct Node* first, struct Node* second)
 		return NULL;
 
 	return ancestor_helper(root, first, second);
+}
+
+
+/* Time  Complexity:
+	In the previous (common_ancestor_3) 'covers' searches all nodes under
+	root first and second, including the nodes in each
+	subtree(root->left, root->right). Then it picks one of those subtrees and
+	searches all of its nodes.
+
+	Each subtree is searched over and over again.
+
+	We may recognize that we should only need to search the entire tree once to
+	find 'first' and 'second'. We should then be able to "bubble up" the
+	findings to earlier nodes in the stack.
+
+	The basic logic is the same as the earlier solution.
+*/
+struct Node*
+common_ancestor_4(struct Node* root,  struct Node* first, struct Node* second)
+{
+	struct Result* result = common_ancestor_helper(root, first, second);
+
+	if (result->is_ancestor)
+		return result->node;
+
+	return NULL;
+}
+
+
+struct Node*
+random_node(struct Node* root)
+{
+	if (root == NULL)
+		return NULL;
+
+	srand(time(NULL));
+	int i = rand() % root->size;
+
+	return get_ith_node(root, i);
 }
