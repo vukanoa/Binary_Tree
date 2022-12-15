@@ -60,6 +60,10 @@ struct Node* go_up(struct Node* node, int difference);
 int depth(struct Node* node);
 
 
+int covers(struct Node* root, struct Node* first);
+struct Node* sibling_of(struct Node* node);
+
+
 // Binary Tree Problems
 struct Node*  minimal_tree           (int* array, int left, int right, int size);
 struct Node*  minimal_tree_visual    (int* array, int left, int right, int size, int level);
@@ -70,6 +74,7 @@ int           validate_BST           (struct Node* root);
 struct Node*  successor              (struct Node* root);
 struct Node*  common_ancestor_0      (struct Node* first, struct Node* second); // Parents
 struct Node*  common_ancestor_1      (struct Node* first, struct Node* second); // Parents
+struct Node*  common_ancestor_2      (struct Node* root,  struct Node* first, struct Node* second); // Parents
 struct Node*  random_node            (struct Node* root);
 
 #endif //TREE_H

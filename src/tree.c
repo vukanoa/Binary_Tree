@@ -857,6 +857,31 @@ depth(struct Node* node)
 }
 
 
+int
+covers(struct Node* root, struct Node* first)
+{
+	if (root == NULL)
+		return 0;
+
+	if (root == first)
+		return 1;
+
+	return covers(root->left, first) || covers(root->right, first);
+}
+
+
+struct Node*
+sibling_of(struct Node* node)
+{
+	if (node == NULL || node->parent == NULL)
+		return NULL;
+
+	struct Node* parent = node->parent;
+
+	return parent->left == node ? parent->right : parent->left;
+}
+
+
 struct Node*
 minimal_tree(int* array, int left, int right, int size) // Original Algorithm
 {
@@ -1154,4 +1179,40 @@ random_node(struct Node* root)
 	int i = rand() % root->size;
 
 	return get_ith_node(root, i);
+}
+
+
+
+/* Time  Complexity: O(t)
+
+	Where 't' is the size of the subtree for the first commong ancestor.
+	O(n) in the worst case, where 'n' is the number of nodes in the tree.
+*/
+/* Space Complexity: O(d)
+
+	Where 'd' is the level of the deeper node. That many recursive calls
+	will be called to find it.
+*/
+struct Node*
+common_ancestor_2(struct Node* root,  struct Node* first, struct Node* second)
+{
+	/* Check if either node is NOT in the tree, or if one answers the other */
+	if (!covers(root, first) || !(covers(root, second)))
+		return NULL;
+	else if (covers(first, second))
+		return first;
+	else if (covers(second, first))
+		return second;
+
+	/* Traverse upwards untill you find a node that covers 'second' */
+	struct Node* sibling = sibling_of(first);
+	struct Node* parent  = first->parent;
+
+	while (!covers(sibling, second))
+	{
+		sibling = sibling_of(parent);
+		parent  = parent->parent;
+	}
+
+	return parent;
 }

@@ -30,7 +30,7 @@ main()
 
 	printf("\n\n");
 	printf("\t=================================\n");
-	printf("\t======= COMMON ANCESTOR 0 =======\n");
+	printf("\t======= COMMON ANCESTOR 2 =======\n");
 	printf("\t=================================\n\n");
 
 	// ==========================================
@@ -41,7 +41,7 @@ main()
 	struct Node* q = find_ret(root, 14);
 
 	/* Solution */
-	struct Node* ancestor = common_ancestor_1(p, q);
+	struct Node* ancestor = common_ancestor_2(root, p, q);
 
 	printf("\n\t[%d & %d] => Common Ancestor: %d\n\n", p->data, q->data, ancestor->data);
 
@@ -55,7 +55,7 @@ main()
 	// struct Node* q = find_ret(root, 13);
 
 	// /* Solution */
-	// struct Node* ancestor = common_ancestor_1(p, q);
+	// struct Node* ancestor = common_ancestor_2(root, p, q);
 
 	// printf("\n\t[%d & %d] => Common Ancestor: %d\n\n", p->data, q->data, ancestor->data);
 
@@ -69,7 +69,7 @@ main()
 	// struct Node* q = find_ret(root, 14);
 
 	// /* Solution */
-	// struct Node* ancestor = common_ancestor_1(p, q);
+	// struct Node* ancestor = common_ancestor_2(root, p, q);
 
 	// printf("\n\t[%d & %d] => Common Ancestor: %d\n\n", p->data, q->data, ancestor->data);
 
@@ -83,7 +83,7 @@ main()
 	// struct Node* q = find_ret(root, 7);
 
 	// /* Solution */
-	// struct Node* ancestor = common_ancestor_1(p, q);
+	// struct Node* ancestor = common_ancestor_2(root, p, q);
 
 	// printf("\n\t[%d & %d] => Common Ancestor: %d\n\n", p->data, q->data, ancestor->data);
 
@@ -97,7 +97,7 @@ main()
 	// struct Node* q = find_ret(root, 28);
 
 	// /* Solution */
-	// struct Node* ancestor = common_ancestor_1(p, q);
+	// struct Node* ancestor = common_ancestor_2(root, p, q);
 
 	// printf("\n\t[%d & %d] => Common Ancestor: %d\n\n", p->data, q->data, ancestor->data);
 
@@ -111,7 +111,7 @@ main()
 	// struct Node* q = find_ret(root, 10);
 
 	// /* Solution */
-	// struct Node* ancestor = common_ancestor_1(p, q);
+	// struct Node* ancestor = common_ancestor_2(root, p, q);
 
 	// printf("\n\t[%d & %d] => Common Ancestor: %d\n\n", p->data, q->data, ancestor->data);
 
@@ -125,21 +125,21 @@ main()
 	// struct Node* q = find_ret(root, 28);
 
 	// /* Solution */
-	// struct Node* ancestor = common_ancestor_1(p, q);
+	// struct Node* ancestor = common_ancestor_2(root, p, q);
 
 	// printf("\n\t[%d & %d] => Common Ancestor: %d\n\n", p->data, q->data, ancestor->data);
 
 
 
 	// ==========================================
-	// ================= TEST 6 =================
+	// ================= TEST 7 =================
 	// ==========================================
 
 	// struct Node* p = find_ret(root, 11);
 	// struct Node* q = find_ret(root, 1);
 
 	// /* Solution */
-	// struct Node* ancestor = common_ancestor_1(p, q);
+	// struct Node* ancestor = common_ancestor_2(root, p, q);
 
 	// printf("\n\t[%d & %d] => Common Ancestor: %d\n\n", p->data, q->data, ancestor->data);
 
@@ -153,7 +153,7 @@ main()
 	// struct Node* q = find_ret(root, 28);
 
 	// /* Solution */
-	// struct Node* ancestor = common_ancestor_1(p, q);
+	// struct Node* ancestor = common_ancestor_2(root, p, q);
 
 	// printf("\n\t[%d & %d] => Common Ancestor: %d\n\n", p->data, q->data, ancestor->data);
 
