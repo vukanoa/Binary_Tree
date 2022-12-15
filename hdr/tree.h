@@ -52,16 +52,14 @@ int check_power_of_two(int number);
 int which_power_of_two(int two_pow);
 int height_of_tree    ();
 
-int          find_min_data(struct Node* root);
-struct Node* find_min     (struct Node* root);
-struct Node* get_ith_node (struct Node* root, int i);
-
-struct Node* go_up(struct Node* node, int difference);
-int depth(struct Node* node);
-
-
-int covers(struct Node* root, struct Node* first);
-struct Node* sibling_of(struct Node* node);
+int          find_min_data  (struct Node* root);
+struct Node* find_min       (struct Node* root);
+struct Node* get_ith_node   (struct Node* root, int i);
+struct Node* go_up          (struct Node* node, int difference);
+int          depth          (struct Node* node);
+int          covers         (struct Node* root, struct Node* first);
+struct Node* sibling_of     (struct Node* node);
+struct Node* ancestor_helper(struct Node* root, struct Node* first, struct Node* second);
 
 
 // Binary Tree Problems
@@ -75,6 +73,7 @@ struct Node*  successor              (struct Node* root);
 struct Node*  common_ancestor_0      (struct Node* first, struct Node* second); // Parents
 struct Node*  common_ancestor_1      (struct Node* first, struct Node* second); // Parents
 struct Node*  common_ancestor_2      (struct Node* root,  struct Node* first, struct Node* second); // Parents
+struct Node*  common_ancestor_3      (struct Node* root,  struct Node* first, struct Node* second);  // w/o Parents
 struct Node*  random_node            (struct Node* root);
 
 #endif //TREE_H

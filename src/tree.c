@@ -883,6 +883,25 @@ sibling_of(struct Node* node)
 
 
 struct Node*
+ancestor_helper(struct Node* root, struct Node* first, struct Node* second)
+{
+	if (root == NULL || root == first || root == second)
+		return root;
+
+	int first_is_on_left  = covers(root->left, first);
+	int second_is_on_left = covers(root->left, second);
+
+	/* Nodes are on different sides */
+	if (first_is_on_left != second_is_on_left)
+		return root;
+
+	struct Node* child_side = first_is_on_left ? root->left : root->right;
+
+	return ancestor_helper(child_side, first, second);
+}
+
+
+struct Node*
 minimal_tree(int* array, int left, int right, int size) // Original Algorithm
 {
 	// Base case
@@ -1215,4 +1234,31 @@ common_ancestor_2(struct Node* root,  struct Node* first, struct Node* second)
 	}
 
 	return parent;
+}
+
+
+/* Time  Complexity: O(n)
+
+	This algorithm runs in O(n) time on a balanced tree. This is because
+	'covers' is called on 2n nodes in the first call (n nodes for the left
+	side, and n nodes for the right side).
+
+	After that, the algorithm branches left or right, at which point 'covers'
+	will be called on (2n/2) nodes, then (2n/4), and so on.
+
+	This results in a runtime of O(n)
+*/
+/* Space Complexity: O(d)
+
+	Where 'd' is the level of the deeper node. That many recursive calls
+	will be called to find it.
+*/
+struct Node*
+common_ancestor_3(struct Node* root, struct Node* first, struct Node* second)
+{
+	/* If either node is NOT in the tree */
+	if (!covers(root, first) || !covers(root, second))
+		return NULL;
+
+	return ancestor_helper(root, first, second);
 }
