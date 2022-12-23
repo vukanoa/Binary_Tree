@@ -1101,6 +1101,18 @@ equal_trees(struct Node* root_T1, struct Node* root_T2) // Preorder compare
 }
 
 
+int
+subtree(struct Node* root_T1, struct Node* root_T2)
+{
+	if (root_T1 == NULL) // Big tree empty & subtree still not found
+		return 0;
+	else if (root_T1->data == root_T2->data && equal_trees(root_T1, root_T2))
+		return 1;
+
+	return subtree(root_T1->left, root_T2) || subtree(root_T1->right, root_T2);
+}
+
+
 /* Binary Tree Problems */
 struct Node*
 minimal_tree(int* array, int left, int right, int size) // Original Algorithm
@@ -1489,6 +1501,17 @@ check_subtree(struct Node* root_T1, struct Node* root_T2)
 		return 0;
 
 	return equal_trees(root_T1, root_T2);
+}
+
+
+int
+check_subtree_2(struct Node* root_T1, struct Node* root_T2)
+{
+	// The empty tree is always a subtree
+	if (root_T2 == NULL)
+		return 1;
+
+	return subtree(root_T1, root_T2);
 }
 
 

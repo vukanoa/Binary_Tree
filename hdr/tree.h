@@ -74,6 +74,7 @@ void           deepest_level    (struct Node* root, int* level);
 int            tree_height      (struct Node* root_T1);
 struct Node*   exist_in_tree    (struct Node* root_T1, int x);
 int            equal_trees      (struct Node* root_T1, struct Node* root_T2);
+int            subtree          (struct Node* root_T1, struct Node* root_T2);
 
 
 /* Binary Tree Problems */
@@ -90,6 +91,7 @@ struct Node*  common_ancestor_2      (struct Node* root,  struct Node* first, st
 struct Node*  common_ancestor_3      (struct Node* root,  struct Node* first, struct Node* second);  // w/o Parents
 struct Node*  common_ancestor_4      (struct Node* root,  struct Node* first, struct Node* second);  // w/o Parents
 int           check_subtree          (struct Node* root_T1, struct Node* root_T2);
+int           check_subtree_2        (struct Node* root_T1, struct Node* root_T2);
 struct Node*  random_node            (struct Node* root);
 
 #endif //TREE_H

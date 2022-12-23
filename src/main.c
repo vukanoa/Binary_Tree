@@ -51,7 +51,8 @@ main()
 
 	// printf("Result:");
 
-	// if (check_subtree(root_T1, root_T2))
+	// /* if (check_subtree(root_T1, root_T2)) */
+	// if (check_subtree_2(root_T1, root_T2))
 	// 	printf("\n\tT2 is INDEED a subtree of T1!\n\n");
 	// else
 	// 	printf("\n\tT2 is NOT a subtree of T1!\n\n");
@@ -96,7 +97,8 @@ main()
 
 	// printf("Result:");
 
-	// if (check_subtree(root_T1, root_T2))
+	// /* if (check_subtree(root_T1, root_T2)) */
+	// if (check_subtree_2(root_T1, root_T2))
 	// 	printf("\n\tT2 is INDEED a subtree of T1!\n\n");
 	// else
 	// 	printf("\n\tT2 is NOT a subtree of T1!\n\n");
@@ -108,7 +110,9 @@ main()
 	// ================= TEST 2 =================
 	// ==========================================
 
-	/* T1 */
+	// printf("\n\t\t--- NOT A BST ---\n\n");
+
+	// /* T1 */
 	// insert(&root_T1, 21);
 	// insert(&root_T1, 25);
 	// insert(&root_T1, 22);
@@ -158,7 +162,8 @@ main()
 
 	// printf("Result:");
 
-	// if (check_subtree(root_T1, root_T2))
+	// /* if (check_subtree(root_T1, root_T2)) */
+	// if (check_subtree_2(root_T1, root_T2))
 	// 	printf("\n\tT2 is INDEED a subtree of T1!\n\n");
 	// else
 	// 	printf("\n\tT2 is NOT a subtree of T1!\n\n");
@@ -169,6 +174,8 @@ main()
 	// ==========================================
 	// ================= TEST 3 =================
 	// ==========================================
+
+	printf("\n\t\t--- NOT A BST ---\n\n");
 
 	/* T1 */
 	insert(&root_T1, 21);
@@ -223,7 +230,8 @@ main()
 
 	printf("Result:");
 
-	if (check_subtree(root_T1, root_T2))
+	/* if (check_subtree(root_T1, root_T2)) */
+	if (check_subtree_2(root_T1, root_T2))
 		printf("\n\tT2 is INDEED a subtree of T1!\n\n");
 	else
 		printf("\n\tT2 is NOT a subtree of T1!\n\n");
