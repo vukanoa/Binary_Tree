@@ -10,6 +10,7 @@
 
 int height_tree = -1;
 
+/* Binary Tree functions */
 void
 insert(struct Node** root, int data)
 {
@@ -209,6 +210,140 @@ find_ret(struct Node*  root, int data)
 
 
 void
+del_node_iter(struct Node** root, int data)
+{
+	if ((*root) == NULL)
+	{
+		printf("\n\t\tTree is Empty! Unable to delete Node %d\n\n", data);
+		return;
+	}
+
+	if ((*root)->data == data && (*root)->left == NULL && (*root)->right == NULL)
+	{
+		printf("\n\t\tRoot %d was successfully removed!", (*root)->data);
+		(*root) = NULL;
+		return;
+	}
+
+	struct Node* prev = NULL;
+	struct Node* cur = (*root);
+
+	while (cur != NULL)
+	{
+		if (cur->data == data)
+		{
+			/* Case 1: Delete Leaves */
+			if (cur->left == NULL && cur->right == NULL)
+			{
+				if (prev->left == cur)
+					prev->left = NULL;
+				else
+					prev->right = NULL;
+			}
+			/* Case 2: Delete parent with one child */
+			else if (cur->left == NULL && cur->right != NULL)
+			{
+				if (prev->left == cur)
+					prev->left = cur->right;
+				else
+					prev->right = cur->right;
+			}
+			else if (cur->left != NULL && cur->right == NULL)
+			{
+				if (prev->left == cur)
+					prev->left = cur->left;
+				else
+					prev->right = cur->left;
+			}
+			/* Case 3: Delete parent with both left and right child */
+			else
+			{
+				cur->data = find_min_data(cur->right);
+				int tmp_data = cur->data;
+
+				prev = cur;
+				cur = cur->right;
+
+				if (cur->data == tmp_data)
+					prev->right = NULL;
+				else
+				{
+					while (cur->data != tmp_data)
+					{
+						prev = cur;
+						cur = cur->left;
+					}
+					prev->left = NULL;
+				}
+			}
+			free(cur);
+			cur = NULL;
+		}
+		else
+		{
+			prev = cur;
+			if (data < cur->data)
+				cur = cur->left;
+			else
+				cur = cur->right;
+
+			if (cur == NULL)
+			{
+				printf("\n\t\tNode %d does NOT exist in the Tree!\n", data);
+				return;
+			}
+		}
+	}
+
+	printf("\n\t\tNode %d has been successfuly removed and the Tree remained sorted!\n\n", data);
+}
+
+
+struct Node*
+del_node_rec(struct Node* root, int data)
+{
+	if (root == NULL)
+		return NULL;
+	else if (data < root->data)
+		root->left = del_node_rec(root->left, data);
+	else if (data > root->data)
+		root->right = del_node_rec(root->right, data);
+	else
+	{
+		// Case 1: No children
+		if (root->left == NULL && root->right == NULL)
+		{
+			free(root);
+			root = NULL;
+		}
+		// Case 2: Either Left or Right child does NOT exist
+		else if (root->left == NULL)
+		{
+			struct Node* tmp = root;
+			root = root->right;
+			free(tmp);
+		}
+		else if (root->right == NULL)
+		{
+			struct Node* tmp = root;
+			root = root->left;
+			free(tmp);
+		}
+		// Case 3: Both children exist
+		else
+		{
+			struct Node* tmp = find_min(root->right);
+			root->data = tmp->data;
+			root->right = del_node_rec(root->right, tmp->data);
+		}
+	}
+
+	return root;
+}
+
+
+/* Orders of printing */
+void
 print_preorder(struct Node* root)
 {
 	if (root == NULL)
@@ -352,11 +487,8 @@ iter_print_levelorder(struct Node* root)
 	if (root == NULL)
 		return;
 
-	int front = POSITION_BEFORE_QUEUE;
-	int rear  = POSITION_BEFORE_QUEUE;
-
-	// This was the error. Glibc doesn't recognize 'pow' for some reason.
-	// Plus I allocated less space than I used so I added mod with 'queue_size'
+	int front = POSITION_BEFORE_QUEUE; // -1
+	int rear  = POSITION_BEFORE_QUEUE; // -1
 
 	int queue_size = int_pow(2, height_tree - 1);
 	struct Node** queue = malloc(sizeof(struct Node*) * queue_size);
@@ -390,79 +522,7 @@ iter_print_levelorder(struct Node* root)
 }
 
 
-int
-int_pow(int base, int exp)
-{
-	int result = 1;
-	while(exp)
-	{
-		result *= base;
-		exp--;
-	}
-
-	return result;
-}
-
-
-int
-calculate_spaces(int height, int cur_level)
-{
-	if (cur_level + 2 > height)
-		return LAST_LEVEL_SPACES;
-
-	int num_1 = int_pow(2, (height - cur_level));
-	int num_2 = int_pow(2, (height - cur_level - 2));
-
-	return num_1 - num_2 - 1;
-}
-
-
-int
-check_power_of_two(int number)
-{
-	if (number == 0)
-		return 0; // NOT a power of two
-
-	while (number != 1)
-	{
-		if (number % 2 != 0)
-			return 0; // NOT a power of two
-
-		number /= 2;
-	}
-
-	return 1; // INDEED a power of two
-}
-
-
-int
-which_power_of_two(int number)
-{
-	if (number % 2 != 0 && number != 1) /* If Odd number except number 1, since number 1 is 2^0 */
-		return 0; // NOT a power of two
-
-	int cnt = 0;
-	for(;;)
-	{
-		if (number == int_pow(2, cnt))
-			break;
-
-		if (int_pow(2, cnt) > number) /* If Even number and NOT a power of two */
-			return 0; // NOT a power of two
-
-		cnt++;
-	}
-
-	return cnt; // Return the power of two of a given number
-}
-
-
-int
-height_of_tree()
-{
-	return height_tree;
-}
-
+/* Visual display of a Binary Tree */
 void
 visual_print(struct Node* root)
 {
@@ -663,139 +723,81 @@ visual_print(struct Node* root)
 }
 
 
-void
-del_node_iter(struct Node** root, int data)
+/* Utility functions for visual print */
+int
+int_pow(int base, int exp)
 {
-	if ((*root) == NULL)
+	int result = 1;
+	while(exp)
 	{
-		printf("\n\t\tTree is Empty! Unable to delete Node %d\n\n", data);
-		return;
+		result *= base;
+		exp--;
 	}
 
-	if ((*root)->data == data && (*root)->left == NULL && (*root)->right == NULL)
-	{
-		printf("\n\t\tRoot %d was successfully removed!", (*root)->data);
-		(*root) = NULL;
-		return;
-	}
-
-	struct Node* prev = NULL;
-	struct Node* cur = (*root);
-
-	while (cur != NULL)
-	{
-		if (cur->data == data)
-		{
-			/* Case 1: Delete Leaves */
-			if (cur->left == NULL && cur->right == NULL)
-			{
-				if (prev->left == cur)
-					prev->left = NULL;
-				else
-					prev->right = NULL;
-			}
-			/* Case 2: Delete parent with one child */
-			else if (cur->left == NULL && cur->right != NULL)
-			{
-				if (prev->left == cur)
-					prev->left = cur->right;
-				else
-					prev->right = cur->right;
-			}
-			else if (cur->left != NULL && cur->right == NULL)
-			{
-				if (prev->left == cur)
-					prev->left = cur->left;
-				else
-					prev->right = cur->left;
-			}
-			/* Case 3: Delete parent with both left and right child */
-			else
-			{
-				cur->data = find_min_data(cur->right);
-				int tmp_data = cur->data;
-
-				prev = cur;
-				cur = cur->right;
-
-				if (cur->data == tmp_data)
-					prev->right = NULL;
-				else
-				{
-					while (cur->data != tmp_data)
-					{
-						prev = cur;
-						cur = cur->left;
-					}
-					prev->left = NULL;
-				}
-			}
-			free(cur);
-			cur = NULL;
-		}
-		else
-		{
-			prev = cur;
-			if (data < cur->data)
-				cur = cur->left;
-			else
-				cur = cur->right;
-
-			if (cur == NULL)
-			{
-				printf("\n\t\tNode %d does NOT exist in the Tree!\n", data);
-				return;
-			}
-		}
-	}
-
-	printf("\n\t\tNode %d has been successfuly removed and the Tree remained sorted!\n\n", data);
+	return result;
 }
 
 
-struct Node*
-del_node_rec(struct Node* root, int data)
+int
+calculate_spaces(int height, int cur_level)
 {
-	if (root == NULL)
-		return NULL;
-	else if (data < root->data)
-		root->left = del_node_rec(root->left, data);
-	else if (data > root->data)
-		root->right = del_node_rec(root->right, data);
-	else
-	{
-		// Case 1: No children
-		if (root->left == NULL && root->right == NULL)
-		{
-			free(root);
-			root = NULL;
-		}
-		// Case 2: Either Left or Right child does NOT exist
-		else if (root->left == NULL)
-		{
-			struct Node* tmp = root;
-			root = root->right;
-			free(tmp);
-		}
-		else if (root->right == NULL)
-		{
-			struct Node* tmp = root;
-			root = root->left;
-			free(tmp);
-		}
-		// Case 3: Both children exist
-		else
-		{
-			struct Node* tmp = find_min(root->right);
-			root->data = tmp->data;
-			root->right = del_node_rec(root->right, tmp->data);
-		}
-	}
+	if (cur_level + 2 > height)
+		return LAST_LEVEL_SPACES;
 
-	return root;
+	int num_1 = int_pow(2, (height - cur_level));
+	int num_2 = int_pow(2, (height - cur_level - 2));
+
+	return num_1 - num_2 - 1;
 }
 
 
+int
+check_power_of_two(int number)
+{
+	if (number == 0)
+		return 0; // NOT a power of two
+
+	while (number != 1)
+	{
+		if (number % 2 != 0)
+			return 0; // NOT a power of two
+
+		number /= 2;
+	}
+
+	return 1; // INDEED a power of two
+}
+
+
+int
+which_power_of_two(int number)
+{
+	if (number % 2 != 0 && number != 1) /* If Odd number except number 1, since number 1 is 2^0 */
+		return 0; // NOT a power of two
+
+	int cnt = 0;
+	for(;;)
+	{
+		if (number == int_pow(2, cnt))
+			break;
+
+		if (int_pow(2, cnt) > number) /* If Even number and NOT a power of two */
+			return 0; // NOT a power of two
+
+		cnt++;
+	}
+
+	return cnt; // Return the power of two of a given number
+}
+
+
+int height_of_tree()
+{
+	return height_tree;
+}
+
+
+/* Utility functions for Binary Tree Problems */
 int
 find_min_data(struct Node* root)
 {
@@ -902,7 +904,7 @@ ancestor_helper(struct Node* root, struct Node* first, struct Node* second)
 
 
 struct Result*
-common_ancestor_helper(struct Node* root, struct Node* first, struct Node* second)
+ancestor_helper_4(struct Node* root, struct Node* first, struct Node* second)
 {
 	struct Result* result = (struct Result*) malloc(sizeof(struct Result));
 	result->node = NULL;
@@ -922,11 +924,11 @@ common_ancestor_helper(struct Node* root, struct Node* first, struct Node* secon
 	result->node = NULL;
 	result->is_ancestor = 0;
 
-	struct Result* result_x = common_ancestor_helper(root->left, first, second);
+	struct Result* result_x = ancestor_helper_4(root->left, first, second);
 	if (result_x->is_ancestor)
 		return result_x;
 
-	struct Result* result_y = common_ancestor_helper(root->right, first, second);
+	struct Result* result_y = ancestor_helper_4(root->right, first, second);
 	if (result_y->is_ancestor)
 		return result_y;
 
@@ -962,6 +964,144 @@ common_ancestor_helper(struct Node* root, struct Node* first, struct Node* secon
 }
 
 
+void
+find_and_replace(struct Node* root, int target, int new_value)
+{
+	if (root == NULL)
+		return;
+
+	int front = POSITION_BEFORE_QUEUE; // -1
+	int rear  = POSITION_BEFORE_QUEUE; // -1
+
+	int root_height_tree = tree_height(root);
+
+	int queue_size = int_pow(2, root_height_tree - 1);
+	struct Node** queue = malloc(sizeof(struct Node*) * queue_size);
+
+	for(;;)
+	{
+		if (root->data == target)
+		{
+			root->data = new_value;
+			return;
+		}
+
+
+		if (root->left != NULL)
+		{
+			rear = (rear + 1) % queue_size;
+			queue[rear] = root->left;
+		}
+
+		if (root->right != NULL)
+		{
+			rear = (rear + 1) % queue_size;
+			queue[rear] = root->right;
+		}
+
+		if (front == rear && queue[front] == NULL)
+			break;
+
+		front = (front + 1) % queue_size;
+		root = queue[front];
+		queue[front] = NULL;
+	}
+	free(queue);
+}
+
+
+void
+deepest_level(struct Node* root, int* level)
+{
+	if (root == NULL)
+		return;
+
+	if (root->level > *level)
+		*level = root->level;
+
+	if (root->left != NULL)
+		deepest_level(root->left, level);
+
+	if (root->right != NULL)
+		deepest_level(root->right, level);
+}
+
+
+int
+tree_height(struct Node* root_T1)
+{
+	int level = 0;
+	deepest_level(root_T1, &level);
+
+	return level + 1;
+}
+
+
+struct Node*
+exist_in_tree(struct Node* root_T1, int x) // Level order check
+{
+	if (root_T1 == NULL)
+		return 0;
+
+	int front = POSITION_BEFORE_QUEUE; // -1
+	int rear  = POSITION_BEFORE_QUEUE; // -1
+
+	int root_T1_height_tree = tree_height(root_T1);
+
+	int queue_size = int_pow(2, root_T1_height_tree - 1);
+	struct Node** queue = malloc(sizeof(struct Node*) * queue_size);
+
+	for(;;)
+	{
+		/* If it exists, return that node */
+		if (root_T1->data == x)
+			return root_T1;
+
+		if (root_T1->left != NULL)
+		{
+			rear = (rear + 1) % queue_size;
+			queue[rear] = root_T1->left;
+		}
+
+		if (root_T1->right != NULL)
+		{
+			rear = (rear + 1) % queue_size;
+			queue[rear] = root_T1->right;
+		}
+
+		if (front == rear && queue[front] == NULL)
+			break;
+
+		front = (front + 1) % queue_size;
+		root_T1 = queue[front];
+		queue[front] = NULL;
+	}
+	free(queue);
+
+	return NULL;
+}
+
+
+int
+equal_trees(struct Node* root_T1, struct Node* root_T2) // Preorder compare
+{
+	if (root_T1 == NULL && root_T2 == NULL)
+		return 1;
+	else if (root_T1 == NULL && root_T2 != NULL)
+		return 0;
+	else if (root_T1 != NULL && root_T2 == NULL)
+		return 0;
+	else if (root_T1->data != root_T2->data) // Check current roots
+		return 0;
+
+	if (equal_trees(root_T1->left, root_T2->left) && equal_trees(root_T1->right, root_T2->right))
+		return 1;
+
+	return 0;
+}
+
+
+/* Binary Tree Problems */
 struct Node*
 minimal_tree(int* array, int left, int right, int size) // Original Algorithm
 {
@@ -1106,8 +1246,10 @@ check_balanced(struct Node* root) // O(NlogN)
 }
 
 
+/* Time  Complexity: O(n) */
+/* Space Complexity: O(h) where 'h' is a height of tree */
 int
-check_balanced_improved(struct Node* root) // O(N) time, O(H) space[H => height_tree]
+check_balanced_improved(struct Node* root)
 {
 	// Base case
 	if (root == NULL)
@@ -1328,12 +1470,25 @@ common_ancestor_3(struct Node* root, struct Node* first, struct Node* second)
 struct Node*
 common_ancestor_4(struct Node* root,  struct Node* first, struct Node* second)
 {
-	struct Result* result = common_ancestor_helper(root, first, second);
+	struct Result* result = ancestor_helper_4(root, first, second);
 
 	if (result->is_ancestor)
 		return result->node;
 
 	return NULL;
+}
+
+
+int
+check_subtree(struct Node* root_T1, struct Node* root_T2)
+{
+	/* Since it doesn't have to be a BST do a levelorder check*/
+	root_T1 = exist_in_tree(root_T1, root_T2->data);
+
+	if (root_T1 == NULL)
+		return 0;
+
+	return equal_trees(root_T1, root_T2);
 }
 
 
