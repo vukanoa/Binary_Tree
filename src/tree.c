@@ -1113,6 +1113,41 @@ subtree(struct Node* root_T1, struct Node* root_T2)
 }
 
 
+void
+preorder_count_paths(struct Node* root, int* total, int target)
+{
+	if (root == NULL)
+		return;
+
+	int sum = 0;
+	count_paths(root, &sum, total, target);
+
+	if (root->left != NULL)
+		preorder_count_paths(root->left, total, target);
+
+	if (root->right != NULL)
+		preorder_count_paths(root->right, total, target);
+}
+
+
+void
+count_paths(struct Node* root, int* sum, int* total, int target)
+{
+	if (root == NULL)
+		return;
+
+	(*sum) += root->data;
+
+	if ((*sum) == target)
+		(*total)++;
+
+	count_paths(root->left , sum, total, target);
+	count_paths(root->right, sum, total, target);
+
+	(*sum) -= root->data;
+}
+
+
 /* Binary Tree Problems */
 struct Node*
 minimal_tree(int* array, int left, int right, int size) // Original Algorithm
@@ -1525,4 +1560,27 @@ random_node(struct Node* root)
 	int i = rand() % root->size;
 
 	return get_ith_node(root, i);
+}
+
+
+
+/* Time  Complexity: O(n *logn) in a balanced tree
+   Time  Complexity: O(n^2) in an unbalanced tree
+*/
+/* Space Complexity: O(logn) in a balanced tree
+   Space Complexity: O(n) in an unbalanced tree
+*/
+int
+paths_with_sum(struct Node* root, int target)
+{
+	if (root == NULL)
+		return 0;
+
+	int total = 0;
+	int sum   = 0;
+
+	preorder_count_paths(root, &total, target);
+	// count_paths(root, &sum, &total, target);
+
+	return total;
 }
