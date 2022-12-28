@@ -4,13 +4,11 @@
 #include "tree.h"
 
 #define EMPTY_STACK -1
-#define HEIGHT 4
-#define POSITION_BEFORE_QUEUE -1
 #define LAST_LEVEL_SPACES 3
 
 int height_tree = -1;
 
-/* Binary Tree functions */
+/* Binary Tree Functions */
 void
 insert(struct Node** root, int data)
 {
@@ -343,6 +341,8 @@ del_node_rec(struct Node* root, int data)
 
 
 /* Orders of printing */
+
+// Recursive printing
 void
 print_preorder(struct Node* root)
 {
@@ -391,6 +391,7 @@ print_postorder(struct Node* root)
 }
 
 
+// Iterative printing
 void
 iter_print_preorder(struct Node* root)
 {
@@ -423,7 +424,9 @@ iter_print_inorder(struct Node* root)
 		return;
 
 	int sp = EMPTY_STACK;
-	struct Node** stack = malloc(sizeof(struct Node*) * HEIGHT);
+	int height = tree_height(root);
+
+	struct Node** stack = malloc(sizeof(struct Node*) * height);
 
 	for(;;)
 	{
@@ -452,10 +455,12 @@ iter_print_postorder(struct Node* root)
 	if (root == NULL)
 		return;
 
+	int height = tree_height(root);
 	int sp_1 = EMPTY_STACK;
 	int sp_2 = EMPTY_STACK;
-	struct Node** stack_1 = malloc(sizeof(struct Node*) * pow(2, HEIGHT));
-	struct Node** stack_2 = malloc(sizeof(struct Node*) * pow(2, HEIGHT));
+
+	struct Node** stack_1 = malloc(sizeof(struct Node*) * pow(2, height));
+	struct Node** stack_2 = malloc(sizeof(struct Node*) * pow(2, height));
 
 	stack_1[++sp_1] = root;
 
@@ -487,8 +492,8 @@ iter_print_levelorder(struct Node* root)
 	if (root == NULL)
 		return;
 
-	int front = POSITION_BEFORE_QUEUE; // -1
-	int rear  = POSITION_BEFORE_QUEUE; // -1
+	int front = -1;
+	int rear  = -1;
 
 	int queue_size = int_pow(2, height_tree - 1);
 	struct Node** queue = malloc(sizeof(struct Node*) * queue_size);
@@ -970,8 +975,8 @@ find_and_replace(struct Node* root, int target, int new_value)
 	if (root == NULL)
 		return;
 
-	int front = POSITION_BEFORE_QUEUE; // -1
-	int rear  = POSITION_BEFORE_QUEUE; // -1
+	int front = -1;
+	int rear  = -1;
 
 	int root_height_tree = tree_height(root);
 
@@ -1028,10 +1033,10 @@ deepest_level(struct Node* root, int* level)
 
 
 int
-tree_height(struct Node* root_T1)
+tree_height(struct Node* root)
 {
 	int level = 0;
-	deepest_level(root_T1, &level);
+	deepest_level(root, &level);
 
 	return level + 1;
 }
@@ -1043,8 +1048,8 @@ exist_in_tree(struct Node* root_T1, int x) // Level order check
 	if (root_T1 == NULL)
 		return 0;
 
-	int front = POSITION_BEFORE_QUEUE; // -1
-	int rear  = POSITION_BEFORE_QUEUE; // -1
+	int front = -1;
+	int rear  = -1;
 
 	int root_T1_height_tree = tree_height(root_T1);
 
@@ -1561,7 +1566,6 @@ random_node(struct Node* root)
 
 	return get_ith_node(root, i);
 }
-
 
 
 /* Time  Complexity: O(n *logn) in a balanced tree

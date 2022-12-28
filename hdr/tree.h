@@ -25,7 +25,7 @@ struct Result{
 	int is_ancestor;
 };
 
-/* Binary Tree functions */
+/* Binary Tree Functions */
 void         insert       (struct Node** root, int data);
 void         insert_parent(struct Node** root, int data);
 void         insert_size  (struct Node** root, int data);
@@ -37,7 +37,7 @@ struct Node* del_node_rec (struct Node*  root, int data);
 
 /* Orders of printing */
 
-// Recursive priting
+// Recursive printing
 void print_preorder (struct Node* root);
 void print_inorder  (struct Node* root);
 void print_postorder(struct Node* root);
@@ -48,7 +48,7 @@ void iter_print_inorder   (struct Node* root);
 void iter_print_postorder (struct Node* root);
 void iter_print_levelorder(struct Node* root);
 
-// Visual display of a Binary Tree
+/* Visual display of a Binary Tree */
 void visual_print(struct Node* head);
 
 /* Utility functions for visual print */
@@ -71,7 +71,7 @@ struct Node*   ancestor_helper     (struct Node* root, struct Node* first, struc
 struct Result* ancestor_helper_4   (struct Node* root, struct Node* first, struct Node* second);
 void           find_and_replace    (struct Node* root, int target, int new_value);
 void           deepest_level       (struct Node* root, int* level);
-int            tree_height         (struct Node* root_T1);
+int            tree_height         (struct Node* root);
 struct Node*   exist_in_tree       (struct Node* root_T1, int x);
 int            equal_trees         (struct Node* root_T1, struct Node* root_T2);
 int            subtree             (struct Node* root_T1, struct Node* root_T2);
